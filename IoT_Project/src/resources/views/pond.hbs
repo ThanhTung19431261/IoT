@@ -1,0 +1,276 @@
+<div class="wrapper">
+    <div class="content-page">
+        <div class="dsy-aside dsy-aside-fixed">
+                <div class="dsy-aside-brand"></div>
+                <hr>
+                <div class="dsy-aside-menu-wrapper">
+                    <div class="dsy-aside-menu">
+                        <ul class="dsy-aside-nav sidebar-toggle-view">
+                            {{!-- <li class="dsy-menu-label">
+                                <div class="dsy-menu-label-text">MENU</div>
+                            </li> --}}
+                            <li class="menu-total dashboard">
+                                <a href="pond">
+                                    <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Giám sát</span>
+                                </a>                              
+                            </li>
+                            <li class="menu-total warning">
+                                <a href="warning">
+                                    <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Lịch sử cảnh báo</span>
+                                </a>                                
+                            </li>
+                            <li class="menu-total ctrl">                              
+                                <a href="pond-ctrl">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
+                                    <span>Điều khiển</span>
+                                </a>              
+                            </li>
+                            <li class="menu-total reprt">                              
+                                <a href="report">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
+                                    <span>Báo cáo</span>
+                                </a>              
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row chart">
+                <div class="col-lg-6 box-one" style="margin-left: 350px;">  
+                    <div class="chart-info-box">
+                        <div class="chart-container">
+                            <div id="tempWaterChart" class="ct-chart ct-golden-section ct-series-a"></div>
+                        </div>
+                        <p>
+                            <span>Nhiệt độ</span><br> 
+                            <span class="temp-change"><i class="fa fa-long-arrow-up"></i> <span id="tempWater"></span><sup>o</sup>C</span>
+                        </p>
+                        <hr>
+                        <p class="time"><i class="material-icons">access_time</i> <span id="current-time"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row value">
+                <div class="col-lg-4">
+                    <div class="chart-info-box">
+                        <p>
+                            <div class="card-icon lightVa">
+                                <i class="material-icons">lightbulb_outline</i>
+                            </div>
+                            <p class="pvalue">PH</p><br>
+                            <h3 id="ph"></h3>
+                        </p>
+                        <hr>
+                        <p class="time"><i class="material-icons">access_time</i> <span id="current-time-6"></span></p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-info-box">
+                        <p>
+                            <div class="card-icon foodVa">
+                                <i class="material-icons">restaurant</i>
+                            </div>
+                            <p class="pvalue">Lượng thức ăn</p><br>
+                            <h3 id="thucan"></h3>
+                        </p>
+                        <hr>
+                        <p class="time"><i class="material-icons">access_time</i> <span id="current-time-7"></span></p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-info-box">
+                        <p>
+                            <div class="card-icon airVa">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <p class="pvalue">Độ đục</p><br>
+                            <h3 id="turbidity"></h3>
+                        </p>
+                        <hr>
+                        <p class="time"><i class="material-icons">access_time</i> <span id="current-time-8"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row report">
+                <div class="col-lg-12">
+                    <div class="card-report">
+                        <div class="chart-info-box">
+                            <div class="card-header farm">
+                                <h4>Bảng thống kê dữ liệu</h4>
+                                <p>Hiển thị 10 dữ liệu gần đây nhất</p>
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Nhiệt độ</th>
+                                            <th>PH</th>
+                                            <th>Độ đục</th>
+                                            <th>Lượng thức ăn</th>
+                                            <th>Thời gian cập nhật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body1">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        const days = now.getDate();
+        const months = now.getMonth();
+        const years = now.getFullYear();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        const formattedTime = `${years}-${(months + 1).toString().padStart(2, '0')}-${days.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('current-time-6').textContent = formattedTime;
+        document.getElementById('current-time-7').textContent = formattedTime;
+        document.getElementById('current-time-8').textContent = formattedTime;
+    }
+
+    setInterval(updateTime, 1000);
+</script>
+
+<script>
+        const socket = io();
+        // Initialize temperature and humidity chart
+        var tempWaterChart = new Chartist.Line('#tempWaterChart', {
+            labels: [],
+            series: [[]]
+        }, {
+            fullWidth: false,
+            chartPadding: {
+                left: 40,
+                bottom: 10,
+                top: 30
+            },
+            axisY: {
+                onlyInteger: true,
+                low: 0,
+                high: 40,
+                offset: 20,
+                scaleMinSpace: 50, //Thêm option này để tăng khoảng cách giữa đường kẻ dọc
+                showGrid: true, //Thêm option này để hiển thị đường kẻ dọc
+                classNames: {
+                    grid: 'ct-grids'
+                }
+            },
+            axisX: {
+                labelInterpolationFnc: function(value, index) {
+                    return index % 1 === 0 ? value : null; //Thay đổi option này để cách 2 ô là 1 giá trị label trục x
+                },
+                showGrid: true //Thêm option này để hiển thị đường kẻ dọc
+            }
+        });
+
+        var tempCount = 0;
+
+        let dataArr = [];
+        
+        var time_table = '';
+        let dataCount = 0;
+
+        socket.on('data4', function(data) {  
+            localStorage.setItem('turbidity', data.Turbidity); 
+            localStorage.setItem('thucan', data.Thucan);   
+            localStorage.setItem('ph', data.Ph);
+            localStorage.setItem('tempWater', data.TempWater);
+
+            document.querySelector('#turbidity').textContent = data.Turbidity.toFixed(2) + ' ' + 'NTU';
+            document.querySelector('#thucan').textContent = data.Thucan + ' ' + 'g';
+            document.querySelector('#ph').textContent = data.Ph + ' ' + 'ph';
+            document.querySelector('#tempWater').textContent = data.TempWater;
+
+            // Update the temperature chart with the new data
+            var time = new Date().toLocaleTimeString();
+
+            if (tempCount >= 5) {
+                tempWaterChart.data.labels.shift();
+                tempWaterChart.data.series[0].shift();
+            } else {
+                tempCount++;
+            }
+            tempWaterChart.data.labels.push(time);
+            tempWaterChart.data.series[0].push(data.TempWater);
+
+            tempWaterChart.update();
+
+            // Add new data to the beginning of the array
+            dataArr.unshift(data);
+            // Keep only the first 10 items in the array
+            dataArr = dataArr.slice(0, 10);
+
+            // Chỉ cập nhật bảng khi có dữ liệu mới
+            if (dataCount % 10 === 0) {
+                updateTable1();
+            }
+            data.time = updateTime1();
+        });
+
+        function updateTime1() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = (now.getMonth() + 1).toString().padStart(2, '0');
+            var day = now.getDate().toString().padStart(2, '0');
+            var time = now.toLocaleTimeString();
+            return year + '-' + month + '-' + day + ' ' + time;
+        }
+
+        function updateTable1() {
+            const tableBody = document.querySelector('#table-body1');
+            tableBody.innerHTML = '';
+            let count = 1;
+            const timeArr = [];
+            for (const data of dataArr) {
+                const tr = document.createElement('tr');
+                const td1 = document.createElement('td');
+                td1.textContent = count++;
+                tr.appendChild(td1);
+                const td2 = document.createElement('td');
+                td2.textContent = data.TempWater + '℃';
+                tr.appendChild(td2);
+                const td3 = document.createElement('td');
+                td3.textContent = data.Ph + 'ph';
+                tr.appendChild(td3);
+                const td4 = document.createElement('td');
+                td4.textContent = data.Turbidity + ' ' + 'NTU';
+                tr.appendChild(td4);
+                const td5 = document.createElement('td');
+                td5.textContent = data.Thucan + ' ' + 'g';
+                tr.appendChild(td5);
+                const td6 = document.createElement('td');
+                td6.textContent = data.time;
+                tr.appendChild(td6);
+                tableBody.appendChild(tr);
+            }
+        }
+
+
+        window.addEventListener('load', function() {  
+            const turbidity = localStorage.getItem('turbidity');
+            const thucan = localStorage.getItem('thucan');
+            const ph = localStorage.getItem('ph');
+            const tempWater = localStorage.getItem('tempWater');
+
+            document.querySelector('#turbidity').textContent = turbidity + ' ' + 'NTU';
+            document.querySelector('#thucan').textContent = thucan + ' ' + 'g';
+            document.querySelector('#ph').textContent = ph + ' ' + 'ph';
+            document.querySelector('#tempWater').textContent = tempWater;
+        });
+    </script>

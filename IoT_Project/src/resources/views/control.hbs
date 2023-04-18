@@ -1,0 +1,446 @@
+<div class="wrapper">
+    <div class="content-page">
+        <div class="dsy-aside dsy-aside-fixed">
+                <div class="dsy-aside-brand"></div>
+                <hr>
+                <div class="dsy-aside-menu-wrapper">
+                    <div class="dsy-aside-menu">
+                        <ul class="dsy-aside-nav sidebar-toggle-view">
+                            {{!-- <li class="dsy-menu-label">
+                                <div class="dsy-menu-label-text">MENU</div>
+                            </li> --}}
+                            <li class="menu-total dashboard">
+                                <a href="farm">
+                                    <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Giám sát</span>
+                                </a>                              
+                            </li>
+                            <li class="menu-total warning">
+                                <a href="warning">
+                                    <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Cảnh báo</span>
+                                </a>                                
+                            </li>
+                            <li class="menu-total ctrl">                              
+                                <a href="control">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
+                                    <span>Điều khiển</span>
+                                </a>              
+                            </li>
+                            <li class="menu-total reprt">                              
+                                <a href="report">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
+                                    <span>Báo cáo</span>
+                                </a>              
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row contrl1">
+                <div class="col-lg-6 col-ctrl">
+                    <div class="chart-info-box ctrl-box">
+                        <section>
+                            <a href="#" id="btn-on31" class="led-button" onclick="handleClick31()"><i class="fa fa-lightbulb-o"></i></a>
+                            <span class="ledSpan"></span>
+                        </section>
+                        <section>
+                            <a href="#" id="btn-on32" class="led-button" onclick="handleClick32()"><i class="fa fa-lightbulb-o"></i></a>
+                            <span class="ledSpan"></span>
+                        </section>
+                        <section>
+                            <a href="#" id="btn-on33" class="led-button" onclick="handleClick33()"><i class="fa fa-lightbulb-o"></i></a>
+                            <span class="ledSpan"></span>
+                        </section>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-6 col-ctrl">
+                    <div class="chart-info-box ctrl-box">
+                        <section style="top: 0%;">
+                            <div style="width:110px; display: inline-block; float: left; margin-left: 39px;">
+                                <a href="#" id="btn-on4" class="food-button" onclick="handleClick4()" style="margin: 0 !important;"><i class="fas fa-drumstick-bite"></i></a>
+                            </div>
+                            <h3 class="h3ctrl">Thức ăn</h3>
+                            <div style="width:300px; display: inline-block;">
+                                <input type="range" min="0" max="1000" value="0" class="slider" id="foodRange" onchange="updateFoodValue()">
+                                <div class="foodValuec"><span id="foodValue">0g</span></div>
+                            </div>
+                            <section style="margin-top: 20px;">
+                                <a href="#" id="btn-toggle-auto-mode" class="auto-mode-button" onclick="handleToggleAutoMode()"><i id="toggle-icon" class="fas fa-toggle-off"></i></a>
+                                <h3 class="h3auto">Tự động</h3>                            
+                            </section>
+                        </section>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row contrl2">
+                <div class="col-lg-6 col-ctrl">
+                    <div class="chart-info-box ctrl-box"  style="width: 200px;">
+                        <section>
+                            <h3 class="h3ctrl" style="margin-top: 0;">Đèn sưởi</h3>
+                            <a href="#" id="btn-on1" class="warm-button" onclick="handleClick1()"><i class="material-icons">wb_sunny</i></a>
+                            <span></span>      
+                        </section>                
+                    </div>
+                </div>
+                <div class="col-lg-6 col-ctrl">
+                    
+                    <div class="chart-info-box ctrl-box"  style="width: 200px;">
+                        <section>
+                            <h3 class="h3ctrl">Quạt</h3>
+                            <a href="#" id="btn-on2" class="fan-button" onclick="handleClick2()"><i class="fas fa-fan"></i></a>
+                            <span></span>                        
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="row report">
+                <div class="col-lg-12">a
+                    <div class="card-report">
+                        <div class="chart-info-box">
+                            <div class="card-header">
+                                <h4>Bảng trạng thái các sự kiện</h4>
+                                <p>Hiển thị 20 dữ liệu gần đây nhất</p>
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Sự kiện</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thời gian</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    var foodAmount = 0;
+
+    function updateFoodValue() {
+        var slider = document.getElementById("foodRange");
+        var output = document.getElementById("foodValue");
+        foodAmount = slider.value;
+        output.innerHTML = foodAmount + 'g';
+    }
+
+    var ipAddress = "172.28.47.99";
+    var ledState = false;
+    var ledState1 = false;
+    var ledState2 = false;
+    var ledState3 = false;
+    var fanState = false;
+    var fanState1 = false;
+    var servoState = false;
+
+    function handleClick1() {
+        if (!ledState) {
+            $.ajax({
+                url: "http://" + ipAddress + "/led/on",
+                success: function() {
+                    console.log("Turned On LED 1");
+                    ledState = true;
+                    document.getElementById("btn-on1").innerHTML = "Turn Off LED 1";
+                },
+                error: function() {
+                    console.log("Error turning on LED 1");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/led/off",
+                success: function() {
+                    console.log("Turned Off LED 1");
+                    ledState = false;
+                    document.getElementById("btn-on1").innerHTML = "Turn On LED 1";
+                },
+                error: function() {
+                    console.log("Error turning off LED 1");
+                }
+            });
+        }
+    }
+
+    function handleClick2() {
+        if (!fanState) {
+            $.ajax({
+                url: "http://" + ipAddress + "/fan/on",
+                success: function() {
+                    console.log("Turned On FAN");
+                    fanState = true;
+                    document.getElementById("btn-on2").innerHTML = "Turn Off FAN";
+                },
+                error: function() {
+                    console.log("Error turning on FAN");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/fan/off",
+                success: function() {
+                    console.log("Turned Off FAN");
+                    fanState = false;
+                    document.getElementById("btn-on2").innerHTML = "Turn On FAN";
+                },
+                error: function() {
+                    console.log("Error turning off FAN");
+                }
+            });
+        }
+    }
+
+    function handleClick21() {
+        if (!fanState1) {
+            $.ajax({
+                url: "http://" + ipAddress + "/fan1/on",
+                success: function() {
+                    console.log("Turned On FAN");
+                    fanState1 = true;
+                    document.getElementById("btn-on21").innerHTML = "Turn Off FAN";
+                },
+                error: function() {
+                    console.log("Error turning on FAN");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/fan1/off",
+                success: function() {
+                    console.log("Turned Off FAN");
+                    fanState1 = false;
+                    document.getElementById("btn-on21").innerHTML = "Turn On FAN";
+                },
+                error: function() {
+                    console.log("Error turning off FAN");
+                }
+            });
+        }
+    }
+
+    function handleClick31() {
+        if (!ledState1) {
+            $.ajax({
+                url: "http://" + ipAddress + "/led1/on",
+                success: function() {
+                    console.log("Turned On LED 1");
+                    ledState1 = true;
+                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
+                },
+                error: function() {
+                    console.log("Error turning on LED 1");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/led1/off",
+                success: function() {
+                    console.log("Turned Off LED 1");
+                    ledState1 = false;
+                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+                },
+                error: function() {
+                    console.log("Error turning off LED 1");
+                }
+            });
+        }
+        
+    }
+
+    function handleClick32() {
+        if (!ledState2) {
+            $.ajax({
+                url: "http://" + ipAddress + "/led2/on",
+                success: function() {
+                    console.log("Turned On LED 1");
+                    ledState2 = true;
+                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
+                },
+                error: function() {
+                    console.log("Error turning on LED 1");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/led2/off",
+                success: function() {
+                    console.log("Turned Off LED 1");
+                    ledState2 = false;
+                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+                },
+                error: function() {
+                    console.log("Error turning off LED 1");
+                }
+            });
+        }
+        
+    }
+
+    function handleClick33() {
+        if (!ledState3) {
+            $.ajax({
+                url: "http://" + ipAddress + "/led3/on",
+                success: function() {
+                    console.log("Turned On LED 1");
+                    ledState3 = true;
+                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
+                },
+                error: function() {
+                    console.log("Error turning on LED 1");
+                }
+            });
+        } else {
+            $.ajax({
+                url: "http://" + ipAddress + "/led3/off",
+                success: function() {
+                    console.log("Turned Off LED 1");
+                    ledState3 = false;
+                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+                },
+                error: function() {
+                    console.log("Error turning off LED 1");
+                }
+            });
+        }
+        
+    }
+
+    function handleClick4() {
+        if (!servoState) {
+            $.ajax({
+            url: "http://" + ipAddress + "/servo?foodAmount=" + foodAmount,
+            success: function() {
+                console.log("Turned On FAN");
+                servoState = true;
+                document.getElementById("btn-on4").innerHTML = "Turn Off FAN";
+            },
+            error: function() {
+                console.log("Error turning on FAN");
+            }
+            });
+        } else {
+            $.ajax({
+            url: "http://" + ipAddress + "/servo?foodAmount=0",
+            success: function() {
+                console.log("Turned Off FAN");
+                servoState = false;
+                document.getElementById("btn-on4").innerHTML = "Turn On FAN";
+            },
+            error: function() {
+                console.log("Error turning off FAN");
+            }
+            });
+        }
+        if (checkFoodAmount()) {
+            $('#btn-on4').removeClass('on');
+        }
+    }
+
+    function checkFoodAmount() {
+        const dataFood = parseInt(localStorage.getItem("food"));
+        if (dataFood >= foodAmount) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function handleToggleAutoMode() {
+        $.ajax({
+        url: "http://" + ipAddress + "/toggleAutoMode",
+        success: function () {
+            console.log("Toggled Auto Mode");
+        },
+        error: function () {
+            console.log("Error toggling Auto");
+        },
+        });
+
+        var toggleIcon = document.getElementById("toggle-icon");
+        if (toggleIcon.classList.contains("fa-toggle-off")) {
+            toggleIcon.classList.remove("fa-toggle-off");
+            toggleIcon.classList.add("fa-toggle-on");
+        } else {
+            toggleIcon.classList.remove("fa-toggle-on");
+            toggleIcon.classList.add("fa-toggle-off");
+        }
+    }
+
+
+    $(document).ready(function(){
+        $('#btn-on1').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on2').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on21').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on31').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on32').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on33').click(function(){
+            $(this).toggleClass('on');
+        });
+
+        $('#btn-on4').click(function(){
+            if (checkFoodAmount()) {
+                $(this).toggleClass('on');
+            } else {     
+                $(this).removeClass('on');
+            }
+        });
+        $("#btn-toggle-auto-mode").click(function () {
+            $(this).toggleClass("on");
+        });
+    });
+
+    const socket = io();
+
+    // Listen for data from Firebase Realtime Database
+    socket.on('data3', function(data) {
+        data.updateTime = Date.now();
+
+        localStorage.setItem("food", data.foodAmount);
+    });
+
+    window.addEventListener('load', function() {
+        const lux = localStorage.getItem('lux');    
+        const nh3 = localStorage.getItem('nh3');
+        const food = localStorage.getItem('food');
+        const humidity = localStorage.getItem('humidity');
+        const temperature = localStorage.getItem('temperature');
+
+        document.querySelector('#lux').textContent = lux + ' ' + 'Lux';
+        document.querySelector('#nh3').textContent = nh3 + ' ' + 'ppm';
+        document.querySelector('#food').textContent = food + ' ' + 'g';
+        document.querySelector('#humidity').textContent = humidity;
+        document.querySelector('#temperature').textContent = temperature;
+    });
+</script>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Dependencies CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/main.min.css" type="text/css">
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/app.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chart.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/value.css">
+    <link rel="stylesheet" href="/css/report.css">
+    <link rel="stylesheet" href="/css/warn.css">
+    <link rel="stylesheet" href="/css/control.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <!-- Google Web Fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+    {{{body}}}
+</body>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const days = now.getDate();
+            const months = now.getMonth();
+            const years = now.getFullYear();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const formattedTime = `${years}-${(months + 1).toString().padStart(2, '0')}-${days.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('current-time').textContent = formattedTime;
+            document.getElementById('current-time-2').textContent = formattedTime;
+            document.getElementById('current-time-3').textContent = formattedTime;
+            document.getElementById('current-time-4').textContent = formattedTime;
+            document.getElementById('current-time-5').textContent = formattedTime;
+        }
+
+        setInterval(updateTime, 1000);
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.dropdown').click(function() {
+                $(this).toggleClass('active');
+                $(this).find('.dsy-sub-group').stop(true, true).slideToggle('1000');
+                $(this).find('.arrow-down').toggleClass('active');
+            });
+        });
+    </script>
+
+    <script>
+        // Lấy dữ liệu từ bảng và trả về định dạng JSON
+        function getJson() {
+            var table = document.getElementById("table-body");
+            var rows = table.getElementsByTagName("tr");
+            var data = [];
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var row = {};
+                row["STT"] = cells[0].textContent;
+                row["Nhiệt độ"] = cells[1].textContent;
+                row["Độ ẩm"] = cells[2].textContent;
+                row["Ánh sáng"] = cells[3].textContent;
+                row["Khí NH3"] = cells[4].textContent;
+                row["Thời gian cập nhật"] = cells[5].textContent;
+                data.push(row);
+            }
+            return JSON.stringify(data, null, '\n');
+        }
+
+        // Tạo đường dẫn tải file JSON
+        function downloadJson() {
+            var json = getJson();
+            var link = document.createElement("a");
+            link.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(json));
+            link.setAttribute("download", "data.json");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Lấy dữ liệu từ bảng và trả về dạng chuỗi CSV
+        function getCSV() {
+            var table = document.getElementById("table-body");
+            var rows = table.getElementsByTagName("tr");
+            var csv = "STT,Nhiet do,Do am,Do sang,NH3,Thoi gian\n";
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                for (var j = 0; j < cells.length; j++) {
+                    csv += cells[j].textContent + ",";
+                }
+                csv = csv.slice(0, -1);
+                csv += "\n";
+            }
+            return csv;
+        }
+        
+        // Tạo đường dẫn tải file CSV
+        function downloadCSV() {
+            var csv = getCSV();
+            var link = document.createElement("a");
+            link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+            link.setAttribute("download", "data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Thêm sự kiện click cho nút xuất file CSV
+        document.getElementById("export-csv").addEventListener("click", function() {
+            downloadCSV();
+        });
+
+        // Thêm sự kiện click cho nút xuất file JSON
+        document.getElementById("export-json").addEventListener("click", function() {
+            downloadJson();
+        });
+    </script>
+
+
+
+    <script>
+        const menuItems = document.querySelectorAll(".menu-total");
+
+        menuItems.forEach((item) => {
+        if (item.querySelector("a").href === window.location.href) {
+            item.classList.add("active");
+        }
+
+        item.addEventListener("click", () => {
+            // Remove the active class from all menu items
+            menuItems.forEach((item) => {
+            item.classList.remove("active");
+            });
+
+            // Add the active class to the clicked menu item
+            item.classList.add("active");
+        });
+        });
+
+    </script>
+
+    <script>
+        const socket = io();
+        // Initialize temperature and humidity chart
+        var tempChart = new Chartist.Line('#tempChart', {
+            labels: [],
+            series: [[]]
+        }, {
+            fullWidth: false,
+            chartPadding: {
+                left: 40,
+                bottom: 10,
+                top: 30
+            },
+            axisY: {
+                onlyInteger: true,
+                low: 0,
+                high: 40,
+                offset: 20,
+                scaleMinSpace: 50, //Thêm option này để tăng khoảng cách giữa đường kẻ dọc
+                showGrid: true, //Thêm option này để hiển thị đường kẻ dọc
+                classNames: {
+                    grid: 'ct-grids'
+                }
+            },
+            axisX: {
+                labelInterpolationFnc: function(value, index) {
+                    return index % 1 === 0 ? value : null; //Thay đổi option này để cách 2 ô là 1 giá trị label trục x
+                },
+                showGrid: true //Thêm option này để hiển thị đường kẻ dọc
+            }
+        });
+
+        var humChart = new Chartist.Bar('#humChart', {
+            labels: [],
+            series: [[]]
+        }, {
+            chartPadding: {
+                left: 40,
+                bottom: 10,
+                top: 30
+            },
+            axisY: {
+                onlyInteger: true,
+                low: 0,
+                high: 100,
+                offset: 20,
+                showGrid: true,
+                classNames: {
+                    grid: 'ct-grids'
+                }
+            },
+            axisX: {
+                labelInterpolationFnc: function(value, index) {
+                    return index % 1 === 0 ? value : null; //Thay đổi option này để cách 2 ô là 1 giá trị label trục x
+                },
+                showGrid: false
+            },
+            fullWidth: false
+        });
+
+        var tempCount = 0;
+        var humCount = 0;
+
+        let dataArr = [];
+        
+        var time_table = '';
+        let dataCount = 0;
+        const localStorageKey1 = 'dataArrFarm';
+
+        function getDataFromLocalStorage() {
+            const savedData = localStorage.getItem(localStorageKey1);
+            if (savedData) {
+                dataArr = JSON.parse(savedData);
+                updateTable();
+            }
+        }
+
+        socket.on('data', function(data) {
+            localStorage.setItem('lux', data.Lux);      
+            localStorage.setItem('nh3', data.NH3); 
+            localStorage.setItem('food', data.Food);   
+            localStorage.setItem('humidity', data.Humidity);
+            localStorage.setItem('temperature', data.Temperature);
+
+            document.querySelector('#lux').textContent = data.Lux + ' ' + 'Lux';
+            document.querySelector('#nh3').textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
+            document.querySelector('#food').textContent = data.Food + ' ' + 'g';
+            document.querySelector('#humidity').textContent = data.Humidity;
+            document.querySelector('#temperature').textContent = data.Temperature;
+
+            // Update the temperature chart with the new data
+            var time = new Date().toLocaleTimeString();
+
+            if (tempCount >= 0) {
+                tempChart.data.labels.shift();
+                tempChart.data.series[0].shift();
+            } else {
+                tempCount++;
+            }
+            tempChart.data.labels.push(time);
+            tempChart.data.series[0].push(data.Temperature);
+
+            tempChart.update();
+
+            if (humCount >= 0) {
+                humChart.data.labels.shift();
+                humChart.data.series[0].shift();
+            } else {
+                humCount++;
+            }
+            humChart.data.labels.push(time);
+            humChart.data.series[0].push(data.Humidity);
+
+            humChart.update();
+
+            // Add new data to the beginning of the array
+            dataArr.unshift(data);
+            // Keep only the first 10 items in the array
+            dataArr = dataArr.slice(0, 10);
+            // Save dataArr to localStorage
+            localStorage.setItem(localStorageKey1, JSON.stringify(dataArr));
+
+            // Chỉ cập nhật bảng khi có dữ liệu mới
+            if (dataCount % 10 === 0) {
+                updateTable();
+            }
+            data.time = updateTime();
+
+            // Lưu dữ liệu biểu đồ vào localStorage
+            localStorage.setItem('tempChartLabels', JSON.stringify(tempChart.data.labels.slice(-5))); // Lưu 5 mục cuối cùng
+            localStorage.setItem('tempChartData', JSON.stringify(tempChart.data.series[0].slice(-5))); // Lưu 5 mục cuối cùng
+            localStorage.setItem('humChartLabels', JSON.stringify(humChart.data.labels.slice(-5))); // Lưu 5 mục cuối cùng
+            localStorage.setItem('humChartData', JSON.stringify(humChart.data.series[0].slice(-5))); // Lưu 5 mục cuối cùng
+        });
+
+        function updateTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = (now.getMonth() + 1).toString().padStart(2, '0');
+            var day = now.getDate().toString().padStart(2, '0');
+            var time = now.toLocaleTimeString();
+            return year + '-' + month + '-' + day + ' ' + time;
+        }
+
+        function updateTable() {
+            const tableBody = document.querySelector('#table-body');
+            tableBody.innerHTML = '';
+            let count = 1;
+            const timeArr = [];
+            for (const data of dataArr) {
+                const tr = document.createElement('tr');
+                const td1 = document.createElement('td');
+                td1.textContent = count++;
+                tr.appendChild(td1);
+                const td2 = document.createElement('td');
+                td2.textContent = data.Temperature + '℃';
+                tr.appendChild(td2);
+                const td3 = document.createElement('td');
+                td3.textContent = data.Humidity + '%';
+                tr.appendChild(td3);
+                const td4 = document.createElement('td');
+                td4.textContent = data.Lux + ' ' + 'Lux';
+                tr.appendChild(td4);
+                const td5 = document.createElement('td');
+                td5.textContent = data.Food + ' ' + 'g';
+                tr.appendChild(td5);
+                const td6 = document.createElement('td');
+                td6.textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
+                tr.appendChild(td6);
+                const td7 = document.createElement('td');
+                td7.textContent = data.time || updateTime();
+                tr.appendChild(td7);
+                tableBody.appendChild(tr);
+            }
+        }
+
+        function getChartDataFromLocalStorage() {
+            const savedTempChartLabels = localStorage.getItem('tempChartLabels');
+            const savedTempChartData = localStorage.getItem('tempChartData');
+            const savedHumChartLabels = localStorage.getItem('humChartLabels');
+            const savedHumChartData = localStorage.getItem('humChartData');
+
+            if (savedTempChartLabels && savedTempChartData) {
+                tempChart.data.labels = JSON.parse(savedTempChartLabels);
+                tempChart.data.series[0] = JSON.parse(savedTempChartData);
+                tempChart.update();
+            }
+
+            if (savedHumChartLabels && savedHumChartData) {
+                humChart.data.labels = JSON.parse(savedHumChartLabels);
+                humChart.data.series[0] = JSON.parse(savedHumChartData);
+                humChart.update();
+            }
+        }
+
+        window.addEventListener('load', function() {
+            getDataFromLocalStorage();
+            getChartDataFromLocalStorage();
+
+            const lux = localStorage.getItem('lux');    
+            const nh3 = localStorage.getItem('nh3');
+            const food = localStorage.getItem('food');
+            const humidity = localStorage.getItem('humidity');
+            const temperature = localStorage.getItem('temperature');
+
+            document.querySelector('#lux').textContent = lux + ' ' + 'Lux';
+            document.querySelector('#nh3').textContent = nh3 + ' ' + 'ppm';
+            document.querySelector('#food').textContent = food + ' ' + 'g';
+            document.querySelector('#humidity').textContent = humidity;
+            document.querySelector('#temperature').textContent = temperature;
+        });
+    </script>
+
+</html>

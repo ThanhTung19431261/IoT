@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Humidity and Temperature Monitoring System</title>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</head>
+
+<body>
+    <h1>Humidity and Temperature Monitoring System</h1>
+    <div style="width: 50%; float: left;">
+        <h2>Temperature</h2>
+        <canvas id="tempChart"></canvas>
+    </div>
+    <div style="width: 50%; float: left;">
+        <h2>Humidity</h2>
+        <canvas id="humidChart"></canvas>
+    </div>
+    <script>
+        // Initialize Firebase Admin SDK
+        const socket = io();
+
+        // Temperature chart
+        var ctxTemp = document.getElementById('tempChart').getContext('2d');
+        var tempChart = new Chart(ctxTemp, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: [],
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        // Humidity chart
+        var ctxHumid = document.getElementById('humidChart').getContext('2d');
+        var humidChart = new Chart(ctxHumid, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Humidity (%)',
+                    data: [],
+                    borderWidth: 1,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        // Listen for incoming data
+        socket.on('data', function(data) {
+            // Update temperature chart
+            tempChart.data.labels.push(data.Timestamp);
+            tempChart.data.datasets[0].data.push(data.Temperature);
+            tempChart.update();
+
+            // Update humidity chart
+            humidChart.data.labels.push(data.Timestamp);
+            humidChart.data.datasets[0].data.push(data.Humidity);
+            humidChart.update();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+<div class="wrapper">
+    <div class="content-page">
+        <div class="dsy-aside dsy-aside-fixed">
+                <div class="dsy-aside-brand"></div>
+                <hr>
+                <div class="dsy-aside-menu-wrapper">
+                    <div class="dsy-aside-menu">
+                        <ul class="dsy-aside-nav sidebar-toggle-view">
+                            {{!-- <li class="dsy-menu-label">
+                                <div class="dsy-menu-label-text">MENU</div>
+                            </li> --}}
+                            <li class="menu-total dashboard">
+                                <a href="farm">
+                                    <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Giám sát</span>
+                                </a>                              
+                            </li>
+                            <li class="menu-total warning">
+                                <a href="warning">
+                                    <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Cảnh báo</span>
+                                </a>                                
+                            </li>
+                            <li class="menu-total ctrl">                              
+                                <a href="control">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
+                                    <span>Điều khiển</span>
+                                </a>              
+                            </li>
+                            <li class="menu-total reprt">                              
+                                <a href="report">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
+                                    <span>Báo cáo</span>
+                                </a>              
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row report">
+                <div class="col-lg-12">
+                    <div class="card-report">
+                        <div class="chart-info-box">
+                            <div class="card-header warn">
+                                <h4>Thông tin cảnh báo</h4>
+                                <p>Hiển thị các sự kiện đã phát hiện</p>
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Sự kiện</th>
+                                            <th>Tin nhắn</th>
+                                            <th class="detect">Thời gian phát hiện</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body3">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    const socket = io();
+
+    // Initialize an empty array to store data
+    let dataArr = [];
+    let hasAlert = false;
+    let hasAlert1 = false;
+
+    socket.on('data2', function(data) {
+        data.updateTime = Date.now();
+
+        if (data.Alert_temp === '' && hasAlert1) {
+            hasAlert1 = false;
+            dataArr.unshift({ Alert_temp: '', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        } else if (data.Alert_temp === 'Temperature is too low!' && !hasAlert1) {
+            hasAlert1 = true;
+            dataArr.unshift({ Alert_temp: 'Temperature is too low!', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        } else if (data.Alert_temp === 'Temperature is too high!' && !hasAlert1) {
+            hasAlert1 = true;
+            dataArr.unshift({ Alert_temp: 'Temperature is too high!', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        }
+
+        if (data.Alert_lux === '' && hasAlert) {
+            hasAlert = false;
+            dataArr.unshift({ Alert_lux: '', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        } else if (data.Alert_lux === 'Lux is too low!' && !hasAlert) {
+            hasAlert = true;
+            dataArr.unshift({ Alert_lux: 'Lux is too low!', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        } else if (data.Alert_lux === 'Lux is too high!' && !hasAlert) {
+            hasAlert = true;
+            dataArr.unshift({ Alert_lux: 'Lux is too high!', updateTime: Date.now() });
+            dataArr = dataArr.slice(0, 100);
+            updateTable();
+        }
+
+    });
+
+    function updateTable() {
+        const tableBody = document.querySelector('#table-body3');
+        tableBody.innerHTML = '';
+        let count = 1;
+
+        for (const data of dataArr) {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.textContent = count++;
+            tr.appendChild(td1);
+
+            const td2 = document.createElement('td');
+            if (data.Alert_lux === 'Lux is too low!' || data.Alert_lux === '' || data.Alert_lux === 'Lux is too high!')
+                td2.textContent = 'Lux';
+            if (data.Alert_temp === 'Temperature is too low!' || data.Alert_temp === '' || data.Alert_temp === 'Temperature is too high!')
+                td2.textContent = 'Temp';
+            tr.appendChild(td2);
+
+            const td3 = document.createElement('td');
+            if (data.Alert_lux === 'Lux is too low!')
+                td3.textContent = 'too low';
+            else if (data.Alert_lux === 'Lux is too high!')
+                td3.textContent = 'too high';
+            else if (data.Alert_lux === '')
+                td3.textContent = 'OK';
+
+            if (data.Alert_temp === 'Temperature is too low!')
+                td3.textContent = 'too low';
+            else if (data.Alert_temp === 'Temperature is too high!')
+                td3.textContent = 'too high';
+            else if (data.Alert_temp === '')
+                td3.textContent = 'OK';
+            tr.appendChild(td3);
+
+            const td4 = document.createElement('td');
+            const date = new Date(data.updateTime);
+            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+            td4.textContent = formattedDate;
+            tr.appendChild(td4);
+            tableBody.appendChild(tr);
+        }
+    }
+
+
+    window.addEventListener('load', function() {
+        const alert_lux = localStorage.getItem('alert_lux');    
+        const alert_nh3 = localStorage.getItem('alert_nh3');
+        const alert_hum = localStorage.getItem('alert_hum');
+        const alert_temp = localStorage.getItem('alert_temp');
+
+        document.querySelector('#alert_lux').textContent = alert_lux;
+        document.querySelector('#alert_nh3').textContent = alert_nh3;
+        document.querySelector('#alert_hum').textContent = alert_hum;
+        document.querySelector('#alert_temp').textContent = alert_temp;
+    });
+</script>

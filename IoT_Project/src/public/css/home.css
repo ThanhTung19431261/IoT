@@ -1,0 +1,65 @@
+.header-home {
+  background: inherit;
+  font-size: 1.6rem;
+  line-height: 1.3em;
+  margin-bottom: var(--gap);
+  padding: 3vmin 4vmin;
+  margin-top: 25px; }
+
+.nav-home {
+  margin: 0 auto;
+  max-width: 1400px;
+  width: 100%;
+  display: flex;
+  flex-direction: row; }
+
+.page-home {
+  background-color: #F8F8F8;
+  padding: 0 4vmin;
+  height: 1000px; }
+
+.container-home {
+  background-color: #F8F8F8;
+  margin: 0 auto;
+  max-width: 1400px;
+  width: 100%; }
+
+.homepage-feature {
+  border-radius: var(--radius);
+  display: Grid;
+  gap: calc(var(--gap)/1.5);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-bottom: 100px; }
+
+.farm-page {
+  display: flex;
+  position: relative;
+  height: 100%;
+  margin-bottom: 0;
+  color: inherit;
+  text-decoration: none;
+  transition: .4s ease;
+  gap: var(--gap);
+  grid-template-columns: .5fr auto;
+  box-shadow: 0 50px 80px -20px transparent;
+  filter: brightness(90%);
+  margin-left: 20px;
+  margin-top: 25px; }
+
+.farm-page:hover .img-home {
+  transform: scale(1.01);
+  transition: transform .4s ease; }
+
+.img-home {
+  border-radius: 2%;
+  height: 600px;
+  object-fit: cover;
+  position: relative;
+  width: 100%;
+  display: block;
+  max-width: 100%;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+  color: inherit;
+  text-decoration: none;
+  transition: .4s ease; }

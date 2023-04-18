@@ -1,0 +1,182 @@
+<div class="wrapper">
+    <div class="content-page">
+
+        <div class="dsy-aside dsy-aside-fixed">
+                <div class="dsy-aside-brand"></div>
+                <hr>
+                <div class="dsy-aside-menu-wrapper">
+                    <div class="dsy-aside-menu">
+                        <ul class="dsy-aside-nav sidebar-toggle-view">
+                            {{!-- <li class="dsy-menu-label">
+                                <div class="dsy-menu-label-text">MENU</div>
+                            </li> --}}
+                            <li class="menu-total dashboard">
+                                <a href="farm">
+                                    <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Giám sát</span>
+                                </a>                              
+                            </li>
+                            <li class="menu-total warning">
+                                <a href="warning">
+                                    <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
+                                    <span>Cảnh báo</span>
+                                </a>                                
+                            </li>
+                            <li class="menu-total ctrl">                              
+                                <a href="control">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
+                                    <span>Điều khiển</span>
+                                </a>              
+                            </li>
+                            <li class="menu-total reprt">                              
+                                <a href="report">
+                                    <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
+                                    <span>Báo cáo</span>
+                                </a>              
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row export">
+                <div class="col-lg-6">
+                    <button id="clear-data" class="btn">DELETE</button>
+                </div>
+                <div class="col-lg-6">
+                    <button id="export-csv" class="btn">CSV</button>
+                </div>
+                <div class="col-lg-6">
+                    <button id="export-json" class="btn">JSON</button>
+                </div>
+                
+            </div>
+            <div class="row report-site">
+                <div class="col-lg-12">
+                    <div class="card-report">
+                        <div class="chart-info-box">
+                            <div class="card-header">
+                                <h4>Bảng thống kê dữ liệu</h4>
+                                <p>Hiển thị 40 dữ liệu gần đây nhất</p>
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Nhiệt độ</th>
+                                            <th>Độ ẩm</th>
+                                            <th>Ánh sáng</th>
+                                            <th>Khí NH3</th>
+                                            <th>Thời gian cập nhật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body2">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const socket = io();
+
+    // Initialize an empty array to store data
+    let dataArr = [];
+    let dataCount = 0;
+    const localStorageKey = 'dataArrPageReport';
+    let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : 0;
+
+    function getDataFromLocalStorage() {
+        const savedData = localStorage.getItem(localStorageKey);
+        if (savedData) {
+            dataArr = JSON.parse(savedData);
+            updateTable();
+        }
+    }
+
+    // Listen for data from Firebase Realtime Database
+    socket.on('data1', function(data) {
+        data.updateTime = Date.now();
+        const currentTime = Date.now();
+        if (currentTime - lastUpdateTime >= 300000) {
+            lastUpdateTime = currentTime;
+            localStorage.setItem('lastUpdateTime', lastUpdateTime.toString());
+            data.updateTime = currentTime;
+            dataArr.unshift(data);
+            dataArr = dataArr.slice(0, 40);
+            localStorage.setItem(localStorageKey, JSON.stringify(dataArr));
+            updateTable();
+        }
+        if (dataCount % 40 === 0) {
+            updateTable();
+        }
+    });
+
+    function clearData() {
+        console.log('Clearing data...');
+        dataArr = [];
+        localStorage.removeItem(localStorageKey);
+        updateTable();
+    }
+
+    document.querySelector("#clear-data").addEventListener("click", function() {
+        console.log('Clear data button clicked...');
+        clearData();
+        updateTable();
+    });
+
+    // Update the table with the data in the array
+    function updateTable() {
+        console.log('Updating table...');
+        const tableBody = document.querySelector('#table-body2');
+        tableBody.innerHTML = '';
+        let count = 1;
+        for (const data of dataArr) {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.textContent = count++;
+            tr.appendChild(td1);
+            const td2 = document.createElement('td');
+            td2.textContent = data.Temperature + '℃';
+            tr.appendChild(td2);
+            const td3 = document.createElement('td');
+            td3.textContent = data.Humidity + '%';
+            tr.appendChild(td3);
+            const td4 = document.createElement('td');
+            td4.textContent = data.Lux + ' ' + 'Lux';
+            tr.appendChild(td4);
+            const td5 = document.createElement('td');
+            td5.textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
+            tr.appendChild(td5);
+            const td6 = document.createElement('td');
+            const date = new Date(data.updateTime);
+            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+            td6.textContent = formattedDate;
+            tr.appendChild(td6);
+            tableBody.appendChild(tr);
+        }
+    }
+
+    window.addEventListener('load', function() {
+        getDataFromLocalStorage();
+
+        const lux = localStorage.getItem('lux');    
+        const nh3 = localStorage.getItem('nh3');
+        const humidity = localStorage.getItem('humidity');
+        const temperature = localStorage.getItem('temperature');
+
+        document.querySelector('#lux').textContent = lux + ' ' + 'Lux';
+        document.querySelector('#nh3').textContent = nh3 + ' ' + 'ppm';
+        document.querySelector('#humidity').textContent = humidity;
+        document.querySelector('#temperature').textContent = temperature;
+    });
+</script>
+

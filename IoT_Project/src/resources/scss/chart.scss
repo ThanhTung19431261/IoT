@@ -1,0 +1,147 @@
+.temperature-line {
+    stroke: red;
+    stroke-width: 2px;
+    fill: none;
+}
+
+.humidity-line {
+    stroke: blue;
+    stroke-width: 2px;
+    fill: none;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 650px;
+    margin: 0 0 0 0 !important;
+    padding: 0;
+}
+
+.col-lg-6 {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.ct-chart {
+    border: none;
+    border-radius: 5px;
+    width: 650px;
+    height: 330px;
+}
+
+#tempChart {
+    background: linear-gradient(to right, #298D6C, #4DA652);
+}
+
+#tempWaterChart {
+    background: linear-gradient(to right, #298D6C, #4DA652);
+}
+
+#humChart {
+    background: linear-gradient(60deg, #d22824, #b55554);
+}
+
+.ct-grids {
+    stroke: #ccc;
+    stroke-dasharray: 5;
+}
+
+.ct-grids line {
+    stroke: #ffffff !important;
+}
+
+.ct-series-a .ct-bar {
+    stroke-width: 20px;
+    stroke: #ffffff !important;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.ct-series-a .ct-line {
+    stroke: #ffffff !important;
+    fill: none;
+    stroke-linejoin: round;
+}
+
+.ct-series-a .ct-point {
+    stroke: #ffffff !important;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.ct-series-a .ct-label {
+    stroke: #ffffff !important;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    font-size: 20px;
+}
+
+.chart-info-box {
+    border: none;
+    background: #202940;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 7px;
+}
+
+.box-one {
+    margin-right: 50px;
+}
+
+.chart {
+    margin-top: 50px;
+}
+
+div.chart-info-box p {
+    color: #8b92a9;
+    text-align: left;
+    padding-left: 20px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.4em;
+    font-weight: 300;
+}
+
+.chart-container {
+    height: 340px;
+}
+
+hr {
+    border-color: #60647761;
+}
+
+p.time {
+    padding-left: 0 !important;
+    margin-left: 500px;
+    margin-bottom: 0;
+}
+
+p.time i {
+    position: relative;
+    top: 3px;
+    font-size: 14px;
+}
+
+p.time span {
+    position: relative;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    top: 1px;
+    font-size: 14px;
+}
+
+.arrow-up {
+    color: green;
+    transform: rotate(0deg);
+}
+
+.arrow-down {
+    color: red;
+    transform: rotate(180deg);
+}
+
+.temp-change {
+    color: green;
+}

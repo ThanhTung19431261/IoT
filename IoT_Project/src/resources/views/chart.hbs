@@ -1,0 +1,17 @@
+<h1>TempWater from Firebase Realtime Database:</h1>
+<p>TempWater: <span id="temp-water"></span></p>
+
+<script>
+    // Initialize Firebase Admin SDK
+    const socket = io();
+
+    socket.on('data', function(data) {
+        localStorage.setItem('tempWater', data.TempWater);
+        document.querySelector('#temp-water').textContent = data.TempWater;
+    });
+
+    window.addEventListener('load', function() {
+        const tempWater = localStorage.getItem('tempWater');
+        document.querySelector('#temp-water').textContent = tempWater;
+    });
+</script>
