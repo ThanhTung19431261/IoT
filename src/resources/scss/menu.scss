@@ -142,3 +142,27 @@ li.menu-total.reprt a span {
 // .active>.dsy-sub-group {
 //     display: block;
 // }
+.title-menu {
+    color: #a9afbbd1;
+    text-transform: uppercase;
+    font-size: 25px;
+    white-space: nowrap;
+    font-weight: 400;
+    line-height: 30px;
+    overflow: hidden;
+    text-align: center;
+    display: block;
+    position: absolute;
+    left: 30%;
+    top: 35%;
+}
+
+.dsy-aside-brand:after {
+    background-color: rgba(180, 180, 180, 0.1);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    height: 1px;
+    width: calc(100% - 30px);
+}

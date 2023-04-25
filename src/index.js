@@ -17,6 +17,8 @@ let snapshotListener3 = null;
 
 let snapshotListener4 = null;
 let snapshotListener5 = null;
+let snapshotListener6 = null;
+let snapshotListener7 = null;
 
 const port = 3000
 
@@ -56,6 +58,36 @@ app.get('/pond', (req, res) => {
             res.render('pond', { data });
         }
         io.emit('data4', data); // send data to all connected clients
+    });
+});
+
+app.get('/pond-warn', (req, res) => {
+    let isResponseSent = false; // initialize flag to false
+    if (snapshotListener6) {
+        firebaseAdmin.database().ref().off('value', snapshotListener6);
+    }
+    snapshotListener6 = firebaseAdmin.database().ref().on("value", function(snapshot) {
+        const data = snapshot.val();
+        if (!isResponseSent) { // check if response has already been sent
+            isResponseSent = true;
+            res.render('pond-warn', { data });
+        }
+        io.emit('data6', data); // send data to all connected clients
+    });
+});
+
+app.get('/pond-rep', (req, res) => {
+    let isResponseSent = false; // initialize flag to false
+    if (snapshotListener7) {
+        firebaseAdmin.database().ref().off('value', snapshotListener7);
+    }
+    snapshotListener7 = firebaseAdmin.database().ref().on("value", function(snapshot) {
+        const data = snapshot.val();
+        if (!isResponseSent) { // check if response has already been sent
+            isResponseSent = true;
+            res.render('pond-rep', { data });
+        }
+        io.emit('data7', data); // send data to all connected clients
     });
 });
 

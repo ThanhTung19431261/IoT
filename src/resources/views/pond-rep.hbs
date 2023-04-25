@@ -3,7 +3,7 @@
 
         <div class="dsy-aside dsy-aside-fixed">
                 <div class="dsy-aside-brand">
-                    <p class="title-menu">Chuồng gà</p>
+                    <p class="title-menu">Ao cá</p>
                 </div>
                 
                 <div class="dsy-aside-menu-wrapper">
@@ -13,25 +13,25 @@
                                 <div class="dsy-menu-label-text">MENU</div>
                             </li> --}}
                             <li class="menu-total dashboard">
-                                <a href="farm">
+                                <a href="pond">
                                     <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
                                     <span>Giám sát</span>
                                 </a>                              
                             </li>
                             <li class="menu-total warning">
-                                <a href="warning">
+                                <a href="pond-warn">
                                     <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
                                     <span>Lịch sử cảnh báo</span>
                                 </a>                                
                             </li>
                             <li class="menu-total ctrl">                              
-                                <a href="control">
+                                <a href="pond-ctrl">
                                     <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
                                     <span>Điều khiển</span>
                                 </a>              
                             </li>
                             <li class="menu-total reprt">                              
-                                <a href="report">
+                                <a href="pond-rep">
                                     <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
                                     <span>Báo cáo</span>
                                 </a>              
@@ -44,13 +44,13 @@
         <div class="container-fluid">
             <div class="row export">
                 <div class="col-lg-6">
-                    <button id="clear-data" class="btn">DELETE</button>
+                    <button id="clear-data2" class="btn" style="background-color: red;">DELETE</button>
                 </div>
                 <div class="col-lg-6">
-                    <button id="export-csv" class="btn">CSV</button>
+                    <button id="export-csv1" class="btn" style="background-color: #20806B;">CSV</button>
                 </div>
                 <div class="col-lg-6">
-                    <button id="export-json" class="btn">JSON</button>
+                    <button id="export-json1" class="btn" style="background-color: #008FB1;">JSON</button>
                 </div>
             </div>
             <div class="row report-site">
@@ -67,14 +67,13 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Nhiệt độ</th>
-                                            <th>Độ ẩm</th>
-                                            <th>Ánh sáng</th>
+                                            <th>PH</th>
+                                            <th>Độ đục</th>
                                             <th>Lượng thức ăn</th>
-                                            <th>Khí NH3</th>
                                             <th>Thời gian cập nhật</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="table-body2">
+                                    <tbody id="table-body5">
                                     </tbody>
                                 </table>
                             </div>
@@ -90,7 +89,7 @@
 <script>
     // Lấy dữ liệu từ bảng và trả về định dạng JSON
     function getJson() {
-        var table = document.getElementById("table-body2");
+        var table = document.getElementById("table-body5");
         var rows = table.getElementsByTagName("tr");
         var data = [];
         for (var i = 0; i < rows.length; i++) {
@@ -98,10 +97,9 @@
             var row = {};
             row["STT"] = cells[0].textContent;
             row["Nhiệt độ"] = cells[1].textContent;
-            row["Độ ẩm"] = cells[2].textContent;
-            row["Ánh sáng"] = cells[3].textContent;
-            row["Lượng thức ăn"] = cells[3].textContent;
-            row["Khí NH3"] = cells[4].textContent;
+            row["PH"] = cells[2].textContent;
+            row["Độ đục"] = cells[3].textContent;
+            row["Lượng thức ăn"] = cells[4].textContent;
             row["Thời gian cập nhật"] = cells[5].textContent;
             data.push(row);
         }
@@ -121,9 +119,9 @@
 
     // Lấy dữ liệu từ bảng và trả về dạng chuỗi CSV
     function getCSV() {
-        var table = document.getElementById("table-body2");
+        var table = document.getElementById("table-body5");
         var rows = table.getElementsByTagName("tr");
-        var csv = "STT,Nhiet do,Do am,Do sang,Luong thuc an,NH3,Thoi gian\n";
+        var csv = "STT,Nhiet do,PH,Do duc,Luong thuc an,Thoi gian\n";
         for (var i = 0; i < rows.length; i++) {
             var cells = rows[i].getElementsByTagName("td");
             for (var j = 0; j < cells.length; j++) {
@@ -147,12 +145,12 @@
     }
 
     // Thêm sự kiện click cho nút xuất file CSV
-    document.getElementById("export-csv").addEventListener("click", function() {
+    document.getElementById("export-csv1").addEventListener("click", function() {
         downloadCSV();
     });
 
     // Thêm sự kiện click cho nút xuất file JSON
-    document.getElementById("export-json").addEventListener("click", function() {
+    document.getElementById("export-json1").addEventListener("click", function() {
         downloadJson();
     });
 </script>
@@ -163,11 +161,11 @@
     // Initialize an empty array to store data
     let dataArr = [];
     let dataCount = 0;
-    const localStorageKey = 'dataArrPageReport';
+    const localStorageKey3 = 'dataArrPageReport1';
     let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : 0;
 
     function getDataFromLocalStorage() {
-        const savedData = localStorage.getItem(localStorageKey);
+        const savedData = localStorage.getItem(localStorageKey3);
         if (savedData) {
             dataArr = JSON.parse(savedData);
             updateTable();
@@ -175,7 +173,7 @@
     }
 
     // Listen for data from Firebase Realtime Database
-    socket.on('data1', function(data) {
+    socket.on('data7', function(data) {
         data.updateTime = Date.now();
         const currentTime = Date.now();
         if (currentTime - lastUpdateTime >= 300000) {
@@ -184,7 +182,7 @@
             data.updateTime = currentTime;
             dataArr.unshift(data);
             dataArr = dataArr.slice(0, 100);
-            localStorage.setItem(localStorageKey, JSON.stringify(dataArr));
+            localStorage.setItem(localStorageKey3, JSON.stringify(dataArr));
             updateTable();
         }
         if (dataCount % 100 === 0) {
@@ -195,11 +193,11 @@
     function clearData() {
         console.log('Clearing data...');
         dataArr = [];
-        localStorage.removeItem(localStorageKey);
+        localStorage.removeItem(localStorageKey3);
         updateTable();
     }
 
-    document.querySelector("#clear-data").addEventListener("click", function() {
+    document.querySelector("#clear-data2").addEventListener("click", function() {
         console.log('Clear data button clicked...');
         clearData();
         updateTable();
@@ -208,7 +206,7 @@
     // Update the table with the data in the array
     function updateTable() {
         console.log('Updating table...');
-        const tableBody = document.querySelector('#table-body2');
+        const tableBody = document.querySelector('#table-body5');
         tableBody.innerHTML = '';
         let count = 1;
         for (const data of dataArr) {
@@ -217,25 +215,22 @@
             td1.textContent = count++;
             tr.appendChild(td1);
             const td2 = document.createElement('td');
-            td2.textContent = data.Temperature + '℃';
+            td2.textContent = data.TempWater + '℃';
             tr.appendChild(td2);
             const td3 = document.createElement('td');
-            td3.textContent = data.Humidity + '%';
+            td3.textContent = data.Ph + 'ph';
             tr.appendChild(td3);
             const td4 = document.createElement('td');
-            td4.textContent = data.Lux + ' ' + 'Lux';
+            td4.textContent = data.Turbidity + ' ' + 'NTU';
             tr.appendChild(td4);
             const td5 = document.createElement('td');
-            td5.textContent = data.Food + ' ' + 'g';
+            td5.textContent = data.Thucan + ' ' + 'g';
             tr.appendChild(td5);
             const td6 = document.createElement('td');
-            td6.textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
-            tr.appendChild(td6);
-            const td7 = document.createElement('td');
             const date = new Date(data.updateTime);
             const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
-            td7.textContent = formattedDate;
-            tr.appendChild(td7);
+            td6.textContent = formattedDate;
+            tr.appendChild(td6);
             tableBody.appendChild(tr);
         }
     }
@@ -243,17 +238,15 @@
     window.addEventListener('load', function() {
         getDataFromLocalStorage();
 
-        const lux = localStorage.getItem('lux');    
-        const nh3 = localStorage.getItem('nh3');
-        const food = localStorage.getItem('food');
-        const humidity = localStorage.getItem('humidity');
-        const temperature = localStorage.getItem('temperature');
+        const turbidity = localStorage.getItem('turbidity');
+        const thucan = localStorage.getItem('thucan');
+        const ph = localStorage.getItem('ph');
+        const tempWater = localStorage.getItem('tempWater');
 
-        document.querySelector('#lux').textContent = lux + ' ' + 'Lux';
-        document.querySelector('#nh3').textContent = nh3 + ' ' + 'ppm';
-        document.querySelector('#food').textContent = food + ' ' + 'g';
-        document.querySelector('#humidity').textContent = humidity;
-        document.querySelector('#temperature').textContent = temperature;
+        document.querySelector('#turbidity').textContent = turbidity + ' ' + 'NTU';
+        document.querySelector('#thucan').textContent = thucan + ' ' + 'g';
+        document.querySelector('#ph').textContent = ph + ' ' + 'ph';
+        document.querySelector('#tempWater').textContent = tempWater;
     });
 </script>
 

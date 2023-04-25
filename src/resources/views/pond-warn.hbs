@@ -12,25 +12,25 @@
                                 <div class="dsy-menu-label-text">MENU</div>
                             </li> --}}
                             <li class="menu-total dashboard">
-                                <a href="farm">
+                                <a href="pond">
                                     <i class="fa fa-bar-chart" style="font-size:24px; margin-right: 5px;"></i>
                                     <span>Giám sát</span>
                                 </a>                              
                             </li>
                             <li class="menu-total warning">
-                                <a href="warning">
+                                <a href="pond-warn">
                                     <i class='fa fa-exclamation-circle' style="font-size:24px; margin-right: 5px;"></i>
                                     <span>Lịch sử cảnh báo</span>
                                 </a>                                
                             </li>
                             <li class="menu-total ctrl">                              
-                                <a href="control">
+                                <a href="pond-ctrl">
                                     <i class='material-icons' style="font-size:24px; margin-right: 5px;">tune</i>
                                     <span>Điều khiển</span>
                                 </a>              
                             </li>
                             <li class="menu-total reprt">                              
-                                <a href="report">
+                                <a href="pond-rep">
                                     <i class='material-icons' style="font-size:24px; margin-right: 5px;">assignment</i>
                                     <span>Báo cáo</span>
                                 </a>              
@@ -41,12 +41,7 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6">
-                    <button id="clear-data1" class="btn">DELETE</button>
-                </div>
-            </div>
-            <div class="row report" style="margin-top: 100px;">
+            <div class="row report">
                 <div class="col-lg-12">
                     <div class="card-report">
                         <div class="chart-info-box">
@@ -64,7 +59,7 @@
                                             <th class="detect">Thời gian phát hiện</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="table-body3">
+                                    <tbody id="table-body4">
                                     </tbody>
                                 </table>
                             </div>
@@ -85,100 +80,74 @@
     let hasAlert = false;
     let hasAlert1 = false;
     let hasAlert2 = false;
-    let hasAlert3 = false;
-    const localStorageKey2 = 'dataArrPageWarn';
+    const localStorageKeyw = 'dataArrPageWarn2';
 
     function getDataFromLocalStorage() {
-        const savedData = localStorage.getItem(localStorageKey2);
+        const savedData = localStorage.getItem(localStorageKeyw);
         if (savedData) {
             dataArr = JSON.parse(savedData);
             updateTable();
         }
     }
 
-    socket.on('data2', function(data) {
+    socket.on('data6', function(data) {
         data.updateTime = Date.now();
 
-        if (data.Alert_temp === '' && hasAlert1) {
+        if (data.Alert_tempw === '' && hasAlert1) {
             hasAlert1 = false;
-            dataArr.unshift({ Alert_temp: '', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tempw: '', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_temp === 'Temperature is too low!' && !hasAlert1) {
+        } else if (data.Alert_tempw === 'TemperatureW low!' && !hasAlert1) {
             hasAlert1 = true;
-            dataArr.unshift({ Alert_temp: 'Temperature is too low!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tempw: 'TemperatureW low!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_temp === 'Temperature is too high!' && !hasAlert1) {
+        } else if (data.Alert_tempw === 'TemperatureW high!' && !hasAlert1) {
             hasAlert1 = true;
-            dataArr.unshift({ Alert_temp: 'Temperature is too high!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tempw: 'TemperatureW high!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
         }
 
-        if (data.Alert_lux === '' && hasAlert) {
+        if (data.Alert_tur === '' && hasAlert) {
             hasAlert = false;
-            dataArr.unshift({ Alert_lux: '', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tur: '', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_lux === 'Lux is too low!' && !hasAlert) {
+        } else if (data.Alert_tur === 'Turbidity low!' && !hasAlert) {
             hasAlert = true;
-            dataArr.unshift({ Alert_lux: 'Lux is too low!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tur: 'Turbidity low!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_lux === 'Lux is too high!' && !hasAlert) {
+        } else if (data.Alert_tur === 'Turbidity high!' && !hasAlert) {
             hasAlert = true;
-            dataArr.unshift({ Alert_lux: 'Lux is too high!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_tur: 'Turbidity high!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
         }
 
-        if (data.Alert_hum === '' && hasAlert2) {
+        if (data.Alert_ph === '' && hasAlert2) {
             hasAlert2 = false;
-            dataArr.unshift({ Alert_hum: '', updateTime: Date.now() });
+            dataArr.unshift({ Alert_ph: '', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_hum === 'Humidity is too low!' && !hasAlert2) {
+        } else if (data.Alert_ph === 'Ph low!' && !hasAlert2) {
             hasAlert2 = true;
-            dataArr.unshift({ Alert_hum: 'Humidity is too low!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_ph: 'Ph low!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
-        } else if (data.Alert_hum === 'Humidity is too high!' && !hasAlert2) {
+        } else if (data.Alert_ph === 'Ph high!' && !hasAlert2) {
             hasAlert2 = true;
-            dataArr.unshift({ Alert_hum: 'Humidity is too high!', updateTime: Date.now() });
+            dataArr.unshift({ Alert_ph: 'Ph high!', updateTime: Date.now() });
             dataArr = dataArr.slice(0, 100);
             updateTable();
         }
-
-        if (data.Alert_nh3 === '' && hasAlert3) {
-            hasAlert3 = false;
-            dataArr.unshift({ Alert_nh3: '', updateTime: Date.now() });
-            dataArr = dataArr.slice(0, 100);
-            updateTable();
-        } else if (data.Alert_nh3 === 'NH3 concentration is too high!' && !hasAlert3) {
-            hasAlert3 = true;
-            dataArr.unshift({ Alert_nh3: 'NH3 concentration is too high!', updateTime: Date.now() });
-            dataArr = dataArr.slice(0, 100);
-            updateTable();
-        }
-        localStorage.setItem(localStorageKey2, JSON.stringify(dataArr));
-    });
-
-    function clearData() {
-        console.log('Clearing data...');
-        dataArr = [];
-        localStorage.removeItem(localStorageKey2);
-        updateTable();
-    }
-
-    document.querySelector("#clear-data1").addEventListener("click", function() {
-        console.log('Clear data button clicked...');
-        clearData();
-        updateTable();
+        localStorage.setItem(localStorageKeyw, JSON.stringify(dataArr));
     });
 
     function updateTable() {
-        const tableBody = document.querySelector('#table-body3');
+        const tableBody = document.querySelector('#table-body4');
         tableBody.innerHTML = '';
         let count = 1;
 
@@ -189,44 +158,36 @@
             tr.appendChild(td1);
 
             const td2 = document.createElement('td');
-            if (data.Alert_lux === 'Lux is too low!' || data.Alert_lux === '' || data.Alert_lux === 'Lux is too high!')
-                td2.textContent = 'Độ sáng';
-            if (data.Alert_temp === 'Temperature is too low!' || data.Alert_temp === '' || data.Alert_temp === 'Temperature is too high!')
-                td2.textContent = 'Nhiệt độ';
-            if (data.Alert_hum === 'Humidity is too low!' || data.Alert_hum === '' || data.Alert_hum === 'Humidity is too high!')
-                td2.textContent = 'Độ ẩm';
-            if (data.Alert_nh3 === 'NH3 concentration is too high!' || data.Alert_nh3 === '')
-                td2.textContent = 'NH3'; 
+            if (data.Alert_tempw === 'TemperatureW low!' || data.Alert_tempw === '' || data.Alert_tempw === 'TemperatureW high!')
+                td2.textContent = 'Nhiệt độ nước';
+            if (data.Alert_tur === 'Turbidity low!' || data.Alert_tur === '' || data.Alert_tur === 'Turbidity high!')
+                td2.textContent = 'Độ đục';
+            if (data.Alert_ph === 'Ph low!' || data.Alert_ph === '' || data.Alert_ph === 'Ph high!')
+                td2.textContent = 'Độ PH';
             tr.appendChild(td2);
 
             const td3 = document.createElement('td');
-            if (data.Alert_lux === 'Lux is too low!')
+            if (data.Alert_tempw === 'TemperatureW low!')
                 td3.textContent = 'Quá thấp';
-            else if (data.Alert_lux === 'Lux is too high!')
+            else if (data.Alert_tempw === 'TemperatureW high!')
                 td3.textContent = 'Quá cao';
-            else if (data.Alert_lux === '')
+            else if (data.Alert_tempw === '')
                 td3.textContent = 'Thích hợp';
 
-            if (data.Alert_temp === 'Temperature is too low!')
+            if (data.Alert_tur === 'Turbidity low!')
                 td3.textContent = 'Quá thấp';
-            else if (data.Alert_temp === 'Temperature is too high!')
+            else if (data.Alert_tur === 'Turbidity high!')
                 td3.textContent = 'Quá cao';
-            else if (data.Alert_temp === '')
+            else if (data.Alert_tur === '')
                 td3.textContent = 'Thích hợp';
 
-            if (data.Alert_hum === 'Humidity is too low!')
+            if (data.Alert_ph === 'Ph low!')
                 td3.textContent = 'Quá thấp';
-            else if (data.Alert_hum === 'Humidity is too high!')
+            else if (data.Alert_ph === 'Ph high!')
                 td3.textContent = 'Quá cao';
-            else if (data.Alert_hum === '')
+            else if (data.Alert_ph === '')
                 td3.textContent = 'Thích hợp';
-
-            if (data.Alert_nh3 === 'NH3 concentration is too high!')
-                td3.textContent = 'Quá cao';
-            else if (data.Alert_nh3 === '')
-                td3.textContent = 'Thích hợp'; 
-                
-            tr.appendChild(td3); 
+            tr.appendChild(td3);
 
             const td4 = document.createElement('td');
             const date = new Date(data.updateTime);
@@ -240,15 +201,15 @@
 
     window.addEventListener('load', function() {
         getDataFromLocalStorage();
+        
+        const turbidity = localStorage.getItem('turbidity');
+        const thucan = localStorage.getItem('thucan');
+        const ph = localStorage.getItem('ph');
+        const tempWater = localStorage.getItem('tempWater');
 
-        const alert_lux = localStorage.getItem('alert_lux');    
-        const alert_nh3 = localStorage.getItem('alert_nh3');
-        const alert_hum = localStorage.getItem('alert_hum');
-        const alert_temp = localStorage.getItem('alert_temp');
-
-        document.querySelector('#alert_lux').textContent = alert_lux;
-        document.querySelector('#alert_nh3').textContent = alert_nh3;
-        document.querySelector('#alert_hum').textContent = alert_hum;
-        document.querySelector('#alert_temp').textContent = alert_temp;
+        document.querySelector('#turbidity').textContent = turbidity + ' ' + 'NTU';
+        document.querySelector('#thucan').textContent = thucan + ' ' + 'g';
+        document.querySelector('#ph').textContent = ph + ' ' + 'ph';
+        document.querySelector('#tempWater').textContent = tempWater;
     });
 </script>
