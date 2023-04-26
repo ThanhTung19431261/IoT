@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="row report">
-                <div class="col-lg-12">a
+                <div class="col-lg-12">
                     <div class="card-report">
                         <div class="chart-info-box">
                             <div class="card-header">
@@ -411,16 +411,6 @@
             $(this).toggleClass('on');
         });
 
-        $('#btn-on4').click(function(){
-            if (checkFoodAmount()) {
-                $(this).toggleClass('on');
-            } else {     
-                $(this).removeClass('on');
-            }
-        });
-        $("#btn-toggle-auto-mode").click(function () {
-            $(this).toggleClass("on");
-        });
     });
 
     const socket = io();

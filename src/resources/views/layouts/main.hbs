@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="/css/control.css">
     <link rel="stylesheet" href="/css/home.css">
     <!-- Google Web Fonts -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&amp;display=swap" rel="stylesheet">
@@ -29,14 +31,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 
 
 </head>
@@ -213,6 +213,43 @@
             humChart.data.series[0].push(data.Humidity);
 
             humChart.update();
+
+            if(data.Temperature > 31) {
+                document.querySelector('#change-temp').style.color = 'red';
+            } else if(data.Temperature < 31){
+                document.querySelector('#change-temp').style.color = 'cyan';
+            } else {
+                document.querySelector('#change-temp').style.color = '';
+            }
+
+            if(data.Lux > 1000) {
+                document.querySelector('#lux').style.color = 'red';
+                document.querySelector('#title-light').style.color = 'red';
+            } else if(data.Lux < 100){
+                document.querySelector('#lux').style.color = 'black';
+                document.querySelector('#title-light').style.color = 'black';
+            } else {
+                document.querySelector('#lux').style.color = '';
+                document.querySelector('#icon-light').style.color = '';
+                document.querySelector('#title-light').style.color = '';
+            }
+
+            if(data.Humidity > 70) {
+                document.querySelector('#change-hum').style.color = 'red';
+            } else if(data.Humidity < 60){
+                document.querySelector('#change-hum').style.color = 'cyan';
+            } else {
+                document.querySelector('#change-hum').style.color = '';
+            }
+
+            if(data.NH3 > 7) {
+                document.querySelector('#nh3').style.color = 'red';
+                document.querySelector('#title-nh3').style.color = 'red';
+            } else {
+                document.querySelector('#nh3').style.color = '';
+                document.querySelector('#title-nh3').style.color = '';
+            }
+            
 
             // Add new data to the beginning of the array
             dataArr.unshift(data);

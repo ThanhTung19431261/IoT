@@ -46,9 +46,9 @@
                         <div class="chart-container">
                             <div id="tempChart" class="ct-chart ct-golden-section ct-series-a"></div>
                         </div>
-                        <p>
+                        <p id="change-temp">
                             <span>Nhiệt độ</span><br> 
-                            <span class="temp-change"><i class="fa fa-long-arrow-up"></i> <span id="temperature"></span><sup>o</sup>C</span>
+                            <span id="temperature"></span><sup>o</sup>C
                         </p>
                         <hr>
                         <p class="time"><i class="material-icons">access_time</i> <span id="current-time"></span></p>
@@ -59,9 +59,9 @@
                         <div class="chart-container">
                             <div id="humChart" class="ct-chart ct-golden-section ct-series-a ct-bar"></div>
                         </div>
-                        <p>
+                        <p id="change-hum">
                             <span>Độ ẩm</span><br>
-                            <i class="fa fa-long-arrow-up"></i> <span id="humidity"></span>%
+                            <span id="humidity"></span>%
                         </p>
                         <hr>
                         <p class="time"><i class="material-icons">access_time</i> <span id="current-time-2"></span></p>
@@ -73,9 +73,9 @@
                     <div class="chart-info-box">
                         <p>
                             <div class="card-icon lightVa">
-                                <i class="material-icons">lightbulb_outline</i>
+                                <i class="material-icons" id="icon-light">lightbulb_outline</i>
                             </div>
-                            <p class="pvalue">Độ sáng</p><br>
+                            <p class="pvalue" id="title-light">Độ sáng</p><br>
                             <h3 id="lux"></h3>
                         </p>
                         <hr>
@@ -99,9 +99,9 @@
                     <div class="chart-info-box">
                         <p>
                             <div class="card-icon airVa">
-                                <i class="fas fa-wind"></i>
+                                <i class="fas fa-wind" id="icon-nh3"></i>
                             </div>
-                            <p class="pvalue">Khí NH3</p><br>
+                            <p class="pvalue" id="title-nh3">Khí NH3</p><br>
                             <h3 id="nh3"></h3>
                         </p>
                         <hr>
