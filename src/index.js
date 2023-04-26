@@ -20,7 +20,7 @@ let snapshotListener5 = null;
 let snapshotListener6 = null;
 let snapshotListener7 = null;
 
-const port = 3000
+const port = process.env.PORT || 3000;
 
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccount),
