@@ -144,6 +144,7 @@
         output.innerHTML = foodAmount + 'g';
     }
 
+    var baseUrl = "https://nodejs-384803.ts.r.appspot.com/control";
     var ipAddress = "192.168.1.12";
     var ledState = false;
     var ledState1 = false;
@@ -156,7 +157,7 @@
     function handleClick1() {
         if (!ledState) {
             $.ajax({
-                url: "https://nodejs-384803.ts.r.appspot.com/control" + ipAddress + "/led/on",
+                url: "https://nodejs-384803.ts.r.appspot.com/control" + "/led/on" + "?IP=" + ipAddress,
                 success: function() {
                     console.log("Turned On LED 1");
                     ledState = true;
@@ -382,6 +383,7 @@
         } else {
             toggleIcon.classList.remove("fa-toggle-on");
             toggleIcon.classList.add("fa-toggle-off");
+            
         }
     }
 
@@ -409,6 +411,10 @@
 
         $('#btn-on33').click(function(){
             $(this).toggleClass('on');
+        });
+
+        $("#btn-toggle-auto-mode").click(function () {
+            $(this).toggleClass("on");
         });
 
     });
