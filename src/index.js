@@ -125,21 +125,6 @@ app.get('/warning', (req, res) => {
     });
 });
 
-app.get('/warning', (req, res) => {
-    let isResponseSent = false; // initialize flag to false
-    if (snapshotListener2) {
-        firebaseAdmin.database().ref().off('value', snapshotListener2);
-    }
-    snapshotListener2 = firebaseAdmin.database().ref().on("value", function(snapshot) {
-        const data = snapshot.val();
-        if (!isResponseSent) { // check if response has already been sent
-            isResponseSent = true;
-            res.render('warning', { data });
-        }
-        io.emit('data2', data); // send data to all connected clients
-    });
-});
-
 app.get('/report', (req, res) => {
     let isResponseSent = false; // initialize flag to false
     if (snapshotListener1) {

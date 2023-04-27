@@ -156,7 +156,7 @@
     function handleClick1() {
         if (!ledState) {
             $.ajax({
-                url: "http://" + ipAddress + "/led/on",
+                url: "https://nodejs-384803.ts.r.appspot.com/control" + ipAddress + "/led/on",
                 success: function() {
                     console.log("Turned On LED 1");
                     ledState = true;
