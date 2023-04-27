@@ -169,7 +169,7 @@
             });
         } else {
             $.ajax({
-                url: "http://" + ipAddress + "/led/off",
+                url: "https://nodejs-384803.ts.r.appspot.com/control" + "/led/off" + "?IP=" + ipAddress,
                 success: function() {
                     console.log("Turned Off LED 1");
                     ledState = false;
