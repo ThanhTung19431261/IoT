@@ -10,6 +10,8 @@ const serviceAccount = require("../firebase/iotproject.json");
 const { response } = require("express");
 const server = http.createServer(app);
 const io = socketIO(server);
+const nodemailer = require('nodemailer');
+
 let snapshotListener = null;
 let snapshotListener1 = null;
 let snapshotListener2 = null;
@@ -154,6 +156,71 @@ app.get('/farm', (req, res) => {
         io.emit('data', data); // send data to all connected clients
     });
 });
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'overlast123569@gmail.com',
+        pass: 'dlbwzbwrbwfkbivs'
+    }
+});
+
+function sendEmail(alertMessage) {
+    const mailOptions = {
+        from: 'overlast123569@gmail.com',
+        to: 'DuyTung110101@gmail.com',
+        subject: 'Cảnh Báo',
+        text: `Nội dung cảnh báo:\n${alertMessage}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
+}
+
+function handleAlert(snapshot, alertType) {
+    const status = snapshot.val();
+    const alertKey = `Alert_${alertType}`;
+
+    if (status) {
+        alerts[alertKey] = `${alertType}: ${status}`;
+    } else {
+        delete alerts[alertKey];
+    }
+
+    checkAlerts(alerts);
+}
+
+function checkAlerts(alerts) {
+    let alertMessage = '';
+
+    for (const key in alerts) {
+        if (alerts[key]) {
+            alertMessage += `${alerts[key]}\n`;
+        }
+    }
+
+    if (alertMessage) {
+        sendEmail(alertMessage);
+    }
+}
+
+const tempAlert = firebaseAdmin.database().ref('/Alert_temp');
+const luxAlert = firebaseAdmin.database().ref('/Alert_lux');
+const humAlert = firebaseAdmin.database().ref('/Alert_hum');
+const nh3Alert = firebaseAdmin.database().ref('/Alert_nh3');
+
+const alerts = {};
+
+tempAlert.on('value', (snapshot) => handleAlert(snapshot, 'Temperature'));
+luxAlert.on('value', (snapshot) => handleAlert(snapshot, 'Light level'));
+humAlert.on('value', (snapshot) => handleAlert(snapshot, 'Humidity'));
+nh3Alert.on('value', (snapshot) => handleAlert(snapshot, 'NH3 level'));
+
 
 
 server.listen(port)

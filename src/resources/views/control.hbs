@@ -43,16 +43,19 @@
         <div class="container-fluid">
             <div class="row contrl1">
                 <div class="col-lg-6 col-ctrl">
-                    <div class="chart-info-box ctrl-box">
+                    <div class="chart-info-box ctrl-box" style="height: 170px;">
                         <section>
+                            <h3 class="h3ctrl" style="margin-top: 0;">Đèn 1</h3>
                             <a href="#" id="btn-on31" class="led-button" onclick="handleClick31()"><i class="fa fa-lightbulb-o"></i></a>
                             <span class="ledSpan"></span>
                         </section>
                         <section>
+                            <h3 class="h3ctrl" style="margin-top: 0;">Đèn 2</h3>
                             <a href="#" id="btn-on32" class="led-button" onclick="handleClick32()"><i class="fa fa-lightbulb-o"></i></a>
                             <span class="ledSpan"></span>
                         </section>
                         <section>
+                            <h3 class="h3ctrl" style="margin-top: 0;">Đèn 3</h3>
                             <a href="#" id="btn-on33" class="led-button" onclick="handleClick33()"><i class="fa fa-lightbulb-o"></i></a>
                             <span class="ledSpan"></span>
                         </section>
@@ -101,34 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row report">
-                <div class="col-lg-12">
-                    <div class="card-report">
-                        <div class="chart-info-box">
-                            <div class="card-header">
-                                <h4>Bảng trạng thái các sự kiện</h4>
-                                <p>Hiển thị 20 dữ liệu gần đây nhất</p>
-                            </div>
-                            <div class="card-body">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Sự kiện</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thời gian</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     
@@ -144,7 +120,6 @@
         output.innerHTML = foodAmount + 'g';
     }
 
-    var baseUrl = "https://nodejs-384803.ts.r.appspot.com/control";
     var ipAddress = "192.168.1.12";
     var ledState = false;
     var ledState1 = false;
@@ -157,7 +132,7 @@
     function handleClick1() {
         if (!ledState) {
             $.ajax({
-                url: "https://nodejs-384803.ts.r.appspot.com/control" + "/led/on" + "?IP=" + ipAddress,
+                url: "http://" + ipAddress + "/led/on",
                 success: function() {
                     console.log("Turned On LED 1");
                     ledState = true;
@@ -169,7 +144,7 @@
             });
         } else {
             $.ajax({
-                url: "https://nodejs-384803.ts.r.appspot.com/control" + "/led/off" + "?IP=" + ipAddress,
+                url: "http://" + ipAddress + "/led/off",
                 success: function() {
                     console.log("Turned Off LED 1");
                     ledState = false;
@@ -202,34 +177,6 @@
                     console.log("Turned Off FAN");
                     fanState = false;
                     document.getElementById("btn-on2").innerHTML = "Turn On FAN";
-                },
-                error: function() {
-                    console.log("Error turning off FAN");
-                }
-            });
-        }
-    }
-
-    function handleClick21() {
-        if (!fanState1) {
-            $.ajax({
-                url: "http://" + ipAddress + "/fan1/on",
-                success: function() {
-                    console.log("Turned On FAN");
-                    fanState1 = true;
-                    document.getElementById("btn-on21").innerHTML = "Turn Off FAN";
-                },
-                error: function() {
-                    console.log("Error turning on FAN");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/fan1/off",
-                success: function() {
-                    console.log("Turned Off FAN");
-                    fanState1 = false;
-                    document.getElementById("btn-on21").innerHTML = "Turn On FAN";
                 },
                 error: function() {
                     console.log("Error turning off FAN");
@@ -365,6 +312,70 @@
         }
     }
 
+    function turnOffFan() {
+        $.ajax({
+            url: "http://" + ipAddress + "/fan/off",
+            success: function () {
+                console.log("Turned Off FAN");
+                fanState = false;
+                document.getElementById("btn-on2").innerHTML = "Turn On FAN";
+            },
+            error: function () {
+                console.log("Error turning off FAN");
+            },
+        });
+
+        $.ajax({
+            url: "http://" + ipAddress + "/led/off",
+            success: function() {
+                console.log("Turned Off LED 1");
+                ledState = false;
+                document.getElementById("btn-on1").innerHTML = "Turn On LED 1";
+            },
+            error: function() {
+                console.log("Error turning off LED 1");
+            }
+        });
+
+        $.ajax({
+            url: "http://" + ipAddress + "/led1/off",
+            success: function() {
+                console.log("Turned Off LED 1");
+                ledState1 = false;
+                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+            },
+            error: function() {
+                console.log("Error turning off LED 1");
+            }
+        });
+
+        $.ajax({
+            url: "http://" + ipAddress + "/led2/off",
+            success: function() {
+                console.log("Turned Off LED 1");
+                ledState2 = false;
+                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+            },
+            error: function() {
+                console.log("Error turning off LED 1");
+            }
+        });
+
+        $.ajax({
+            url: "http://" + ipAddress + "/led3/off",
+            success: function() {
+                console.log("Turned Off LED 1");
+                ledState3 = false;
+                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
+            },
+            error: function() {
+                console.log("Error turning off LED 1");
+            }
+        });
+
+    }
+
+
     function handleToggleAutoMode() {
         $.ajax({
         url: "http://" + ipAddress + "/toggleAutoMode",
@@ -383,7 +394,7 @@
         } else {
             toggleIcon.classList.remove("fa-toggle-on");
             toggleIcon.classList.add("fa-toggle-off");
-            
+            turnOffFan();
         }
     }
 
@@ -420,6 +431,11 @@
     });
 
     const socket = io();
+    let dataArr = [];
+        
+    var time_table = '';
+    let dataCount = 0;
+    const localStorageKey1 = 'dataArrFarm';
 
     // Listen for data from Firebase Realtime Database
     socket.on('data3', function(data) {

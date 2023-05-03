@@ -359,7 +359,7 @@ a.food-button i {
     position: absolute;
     bottom: 0;
     left: 17.5%;
-    top: 120%;
+    top: 110%;
     transition: background-color 350ms, box-shadow 700ms;
     -o-transition: background-color 350ms, box-shadow 700ms;
     -moz-transition: background-color 350ms, box-shadow 700ms;
@@ -468,4 +468,8 @@ a.led-button i {
     margin: 0;
     width: 225px;
     display: inline-block;
+}
+
+.contrl2 {
+    margin-top: 50px;
 }
