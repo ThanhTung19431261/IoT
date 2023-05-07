@@ -332,13 +332,13 @@ a.led-button i {
   font-size: 50px; }
 
 .contrl1 {
-  margin-top: 50px; }
+  margin-top: 20px; }
 
 .col-ctrl {
   position: relative;
   flex: 1;
   height: 150px;
-  margin-bottom: 20px; }
+  margin-bottom: 30px; }
 
 .ctrl-box {
   width: 500px;
@@ -401,7 +401,7 @@ a.led-button i {
   margin: 0; }
 
 .auto-mode-button i {
-  font-size: 24px;
+  font-size: 30px;
   top: 10%;
   position: relative; }
 
@@ -415,3 +415,24 @@ a.led-button i {
 
 .contrl2 {
   margin-top: 50px; }
+
+.time-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; }
+
+.time-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #8b92a9;
+  font-size: 20px; }
+
+input[type="number"] {
+  width: 50px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  height: 30px;
+  margin-left: 5px; }

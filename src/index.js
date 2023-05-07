@@ -157,6 +157,101 @@ app.get('/farm', (req, res) => {
     });
 });
 
+const lightRef = firebaseAdmin.database().ref('/Light_Status');
+const light1Ref = firebaseAdmin.database().ref('/Light1_Status');
+const light2Ref = firebaseAdmin.database().ref('/Light2_Status');
+const light3Ref = firebaseAdmin.database().ref('/Light3_Status');
+const fanRef = firebaseAdmin.database().ref('/fan_Status');
+const foodRef = firebaseAdmin.database().ref('/food_Value');
+const autoRef = firebaseAdmin.database().ref('/auto_Status');
+
+function updateLightStatus(status) {
+    lightRef.set(status);
+}
+
+function updateLight1Status(status) {
+    light1Ref.set(status);
+}
+
+function updateLight2Status(status) {
+    light2Ref.set(status);
+}
+
+function updateLight3Status(status) {
+    light3Ref.set(status);
+}
+
+function updateFanStatus(status) {
+    fanRef.set(status);
+}
+
+function updateFoodStatus(status) {
+    foodRef.set(status);
+}
+
+function updateAutoStatus(status) {
+    autoRef.set(status);
+}
+
+io.on('connection', (socket) => {
+    console.log('User connected');
+
+    socket.on('light', (data) => {
+        console.log('Light status:', data.status);
+        updateLightStatus(data.status);
+    });
+
+    socket.on('light1', (data) => {
+        console.log('Light1 status:', data.status);
+        updateLight1Status(data.status);
+    });
+
+    socket.on('light2', (data) => {
+        console.log('Light2 status:', data.status);
+        updateLight2Status(data.status);
+    });
+
+    socket.on('light3', (data) => {
+        console.log('Light3 status:', data.status);
+        updateLight3Status(data.status);
+    });
+
+    socket.on('fan', (data) => {
+        console.log('Fan status:', data.status);
+        updateFanStatus(data.status);
+    });
+
+    socket.on('food', (data) => {
+        console.log('Food value:', data.value);
+        updateFoodStatus(data.value);
+    });
+
+    socket.on('auto', (data) => {
+        console.log('Auto status:', data.status);
+        updateAutoStatus(data.status);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
+
+app.use(express.json()); // Thêm dòng này để phân tích cú pháp JSON trong yêu cầu
+
+app.post("/update-time", (req, res) => {
+    const timeData = req.body;
+    updateTimeData(timeData);
+    res.sendStatus(200);
+});
+
+const timeRef1 = firebaseAdmin.database().ref("/Time1");
+const timeRef2 = firebaseAdmin.database().ref("/Time2");
+
+function updateTimeData(timeData) {
+    timeRef1.set(timeData.time1);
+    timeRef2.set(timeData.time2);
+}
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {

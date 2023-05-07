@@ -40,6 +40,10 @@
                 </div>
         </div>
 
+        <section style="margin-top: 20px;">
+            <a href="#" id="btn-toggle-auto-mode" class="auto-mode-button" onclick="handleToggleAutoMode()"><i id="toggle-icon" class="fas fa-toggle-off"></i></a>
+            <h3 class="h3auto">Chế độ tự động</h3>                         
+        </section>
         <div class="container-fluid">
             <div class="row contrl1">
                 <div class="col-lg-6 col-ctrl">
@@ -63,20 +67,42 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-ctrl">
-                    <div class="chart-info-box ctrl-box">
+                    <div class="chart-info-box ctrl-box" style="height: 220px;">
                         <section style="top: 0%;">
                             <div style="width:110px; display: inline-block; float: left; margin-left: 39px;">
-                                <a href="#" id="btn-on4" class="food-button" onclick="handleClick4()" style="margin: 0 !important;"><i class="fas fa-drumstick-bite"></i></a>
+                                <a href="#" id="btn-on4" class="food-button" onclick="submitFoodValue()" style="margin: 0 !important;"><i class="fas fa-drumstick-bite"></i></a>
+                                <p style="font-size: 20px; font-weight: bold; position:absolute; left: 25%;">Lần 1</p>
+                                <p style="font-size: 20px; font-weight: bold; position:absolute; left: 25%; top: 68%;">Lần 2</p>
                             </div>
                             <h3 class="h3ctrl">Thức ăn</h3>
                             <div style="width:300px; display: inline-block;">
                                 <input type="range" min="0" max="1000" value="0" class="slider" id="foodRange" onchange="updateFoodValue()">
                                 <div class="foodValuec"><span id="foodValue">0g</span></div>
+                                <div style="margin-top: 30px;">
+                                    <div class="time-inputs">
+                                        <div class="time-input" style="margin-left: 40px;">
+                                            <label for="hour" style="margin-bottom: 0;">Giờ:</label>
+                                            <input type="number" id="hour" name="hour" min="0" max="23" value="0">
+                                        </div>
+                                        <div class="time-input" style="margin-right: 50px;">
+                                            <label for="minute" style="margin-bottom: 0;">Phút:</label>
+                                            <input type="number" id="minute" name="minute" min="0" max="59" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="time-inputs">
+                                        <div class="time-input" style="margin-left: 40px;">
+                                            <label for="hour" style="margin-bottom: 0;">Giờ:</label>
+                                            <input type="number" id="hour" name="hour" min="0" max="23" value="0">
+                                        </div>
+                                        <div class="time-input" style="margin-right: 50px;">
+                                            <label for="minute" style="margin-bottom: 0;">Phút:</label>
+                                            <input type="number" id="minute" name="minute" min="0" max="59" value="0">
+                                        </div>
+                                    </div>
+                                    <button id="submitTime" type="button" style="margin-top: 10px; border-radius: 5px;">Thiết lập</button>
+                                </div>
                             </div>
-                            <section style="margin-top: 20px;">
-                                <a href="#" id="btn-toggle-auto-mode" class="auto-mode-button" onclick="handleToggleAutoMode()"><i id="toggle-icon" class="fas fa-toggle-off"></i></a>
-                                <h3 class="h3auto">Tự động</h3>                            
-                            </section>
+                            
                         </section>
                     </div>
                 </div>
@@ -112,292 +138,6 @@
 
 <script>
     var foodAmount = 0;
-
-    function updateFoodValue() {
-        var slider = document.getElementById("foodRange");
-        var output = document.getElementById("foodValue");
-        foodAmount = slider.value;
-        output.innerHTML = foodAmount + 'g';
-    }
-
-    var ipAddress = "192.168.1.12";
-    var ledState = false;
-    var ledState1 = false;
-    var ledState2 = false;
-    var ledState3 = false;
-    var fanState = false;
-    var fanState1 = false;
-    var servoState = false;
-
-    function handleClick1() {
-        if (!ledState) {
-            $.ajax({
-                url: "http://" + ipAddress + "/led/on",
-                success: function() {
-                    console.log("Turned On LED 1");
-                    ledState = true;
-                    document.getElementById("btn-on1").innerHTML = "Turn Off LED 1";
-                },
-                error: function() {
-                    console.log("Error turning on LED 1");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/led/off",
-                success: function() {
-                    console.log("Turned Off LED 1");
-                    ledState = false;
-                    document.getElementById("btn-on1").innerHTML = "Turn On LED 1";
-                },
-                error: function() {
-                    console.log("Error turning off LED 1");
-                }
-            });
-        }
-    }
-
-    function handleClick2() {
-        if (!fanState) {
-            $.ajax({
-                url: "http://" + ipAddress + "/fan/on",
-                success: function() {
-                    console.log("Turned On FAN");
-                    fanState = true;
-                    document.getElementById("btn-on2").innerHTML = "Turn Off FAN";
-                },
-                error: function() {
-                    console.log("Error turning on FAN");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/fan/off",
-                success: function() {
-                    console.log("Turned Off FAN");
-                    fanState = false;
-                    document.getElementById("btn-on2").innerHTML = "Turn On FAN";
-                },
-                error: function() {
-                    console.log("Error turning off FAN");
-                }
-            });
-        }
-    }
-
-    function handleClick31() {
-        if (!ledState1) {
-            $.ajax({
-                url: "http://" + ipAddress + "/led1/on",
-                success: function() {
-                    console.log("Turned On LED 1");
-                    ledState1 = true;
-                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
-                },
-                error: function() {
-                    console.log("Error turning on LED 1");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/led1/off",
-                success: function() {
-                    console.log("Turned Off LED 1");
-                    ledState1 = false;
-                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-                },
-                error: function() {
-                    console.log("Error turning off LED 1");
-                }
-            });
-        }
-        
-    }
-
-    function handleClick32() {
-        if (!ledState2) {
-            $.ajax({
-                url: "http://" + ipAddress + "/led2/on",
-                success: function() {
-                    console.log("Turned On LED 1");
-                    ledState2 = true;
-                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
-                },
-                error: function() {
-                    console.log("Error turning on LED 1");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/led2/off",
-                success: function() {
-                    console.log("Turned Off LED 1");
-                    ledState2 = false;
-                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-                },
-                error: function() {
-                    console.log("Error turning off LED 1");
-                }
-            });
-        }
-        
-    }
-
-    function handleClick33() {
-        if (!ledState3) {
-            $.ajax({
-                url: "http://" + ipAddress + "/led3/on",
-                success: function() {
-                    console.log("Turned On LED 1");
-                    ledState3 = true;
-                    document.getElementById("btn-on31").innerHTML = "Turn Off LED 1";
-                },
-                error: function() {
-                    console.log("Error turning on LED 1");
-                }
-            });
-        } else {
-            $.ajax({
-                url: "http://" + ipAddress + "/led3/off",
-                success: function() {
-                    console.log("Turned Off LED 1");
-                    ledState3 = false;
-                    document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-                },
-                error: function() {
-                    console.log("Error turning off LED 1");
-                }
-            });
-        }
-        
-    }
-
-    function handleClick4() {
-        if (!servoState) {
-            $.ajax({
-            url: "http://" + ipAddress + "/servo?foodAmount=" + foodAmount,
-            success: function() {
-                console.log("Turned On FAN");
-                servoState = true;
-                document.getElementById("btn-on4").innerHTML = "Turn Off FAN";
-            },
-            error: function() {
-                console.log("Error turning on FAN");
-            }
-            });
-        } else {
-            $.ajax({
-            url: "http://" + ipAddress + "/servo?foodAmount=0",
-            success: function() {
-                console.log("Turned Off FAN");
-                servoState = false;
-                document.getElementById("btn-on4").innerHTML = "Turn On FAN";
-            },
-            error: function() {
-                console.log("Error turning off FAN");
-            }
-            });
-        }
-        if (checkFoodAmount()) {
-            $('#btn-on4').removeClass('on');
-        }
-    }
-
-    function checkFoodAmount() {
-        const dataFood = parseInt(localStorage.getItem("food"));
-        if (dataFood >= foodAmount) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function turnOffFan() {
-        $.ajax({
-            url: "http://" + ipAddress + "/fan/off",
-            success: function () {
-                console.log("Turned Off FAN");
-                fanState = false;
-                document.getElementById("btn-on2").innerHTML = "Turn On FAN";
-            },
-            error: function () {
-                console.log("Error turning off FAN");
-            },
-        });
-
-        $.ajax({
-            url: "http://" + ipAddress + "/led/off",
-            success: function() {
-                console.log("Turned Off LED 1");
-                ledState = false;
-                document.getElementById("btn-on1").innerHTML = "Turn On LED 1";
-            },
-            error: function() {
-                console.log("Error turning off LED 1");
-            }
-        });
-
-        $.ajax({
-            url: "http://" + ipAddress + "/led1/off",
-            success: function() {
-                console.log("Turned Off LED 1");
-                ledState1 = false;
-                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-            },
-            error: function() {
-                console.log("Error turning off LED 1");
-            }
-        });
-
-        $.ajax({
-            url: "http://" + ipAddress + "/led2/off",
-            success: function() {
-                console.log("Turned Off LED 1");
-                ledState2 = false;
-                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-            },
-            error: function() {
-                console.log("Error turning off LED 1");
-            }
-        });
-
-        $.ajax({
-            url: "http://" + ipAddress + "/led3/off",
-            success: function() {
-                console.log("Turned Off LED 1");
-                ledState3 = false;
-                document.getElementById("btn-on31").innerHTML = "Turn On LED 1";
-            },
-            error: function() {
-                console.log("Error turning off LED 1");
-            }
-        });
-
-    }
-
-
-    function handleToggleAutoMode() {
-        $.ajax({
-        url: "http://" + ipAddress + "/toggleAutoMode",
-        success: function () {
-            console.log("Toggled Auto Mode");
-        },
-        error: function () {
-            console.log("Error toggling Auto");
-        },
-        });
-
-        var toggleIcon = document.getElementById("toggle-icon");
-        if (toggleIcon.classList.contains("fa-toggle-off")) {
-            toggleIcon.classList.remove("fa-toggle-off");
-            toggleIcon.classList.add("fa-toggle-on");
-        } else {
-            toggleIcon.classList.remove("fa-toggle-on");
-            toggleIcon.classList.add("fa-toggle-off");
-            turnOffFan();
-        }
-    }
-
 
     $(document).ready(function(){
         $('#btn-on1').click(function(){
@@ -437,14 +177,177 @@
     let dataCount = 0;
     const localStorageKey1 = 'dataArrFarm';
 
-    // Listen for data from Firebase Realtime Database
-    socket.on('data3', function(data) {
-        data.updateTime = Date.now();
+    function handleToggleAutoMode() {
+        var toggleIcon = document.getElementById("toggle-icon");
+        if (toggleIcon.classList.contains("fa-toggle-off")) {
+            toggleIcon.classList.remove("fa-toggle-off");
+            toggleIcon.classList.add("fa-toggle-on");
+        } else {
+            toggleIcon.classList.remove("fa-toggle-on");
+            toggleIcon.classList.add("fa-toggle-off");
+        }
 
-        localStorage.setItem("food", data.foodAmount);
+        const btnAutoOn = document.getElementById('btn-toggle-auto-mode');
+        const isOnAuto = btnAutoOn.classList.contains('on');
+        socket.emit('auto', { status: isOnAuto ? 'off' : 'on' });
+
+        localStorage.setItem("autoModeState", isOnAuto ? "off" : "on");
+    }
+
+    function setAutoModeButtonState() {
+        const autoModeState = localStorage.getItem("autoModeState");
+        const toggleIcon = document.getElementById("toggle-icon");
+        const btnAutoOn = document.getElementById("btn-toggle-auto-mode");
+
+        if (autoModeState === "on") {
+            toggleIcon.classList.remove("fa-toggle-off");
+            toggleIcon.classList.add("fa-toggle-on");
+            btnAutoOn.classList.add("on");
+        } else {
+            toggleIcon.classList.remove("fa-toggle-on");
+            toggleIcon.classList.add("fa-toggle-off");
+            btnAutoOn.classList.remove("on");
+        }
+    }
+
+    function updateFoodValue() {
+        const foodRange = document.getElementById('foodRange');
+        const foodValue = document.getElementById('foodValue');
+        foodValue.textContent = foodRange.value + 'g';
+    }
+
+    function submitFoodValue() {
+        const foodRange = document.getElementById('foodRange');
+        const foodValue = foodRange.value;
+        socket.emit('food', { value: foodValue });
+    }
+
+    socket.on('data3', function (data) {
+        data.updateTime = Date.now();
     });
 
+    function handleClick1() {
+        const btnOn1 = document.getElementById('btn-on1');
+        const isOn = btnOn1.classList.contains('on');
+        socket.emit('light', { status: isOn ? 'off' : 'on' });
+
+        localStorage.setItem("light1State", isOn ? "off" : "on");
+    }
+
+    function handleClick2() {
+        const btnOn2 = document.getElementById('btn-on2');
+        const isOnfan = btnOn2.classList.contains('on');
+        socket.emit('fan', { status: isOnfan ? 'off' : 'on' });
+
+        localStorage.setItem("fanState", isOnfan ? "off" : "on");
+    }
+
+    function handleClick31() {
+        const btnOn31 = document.getElementById('btn-on31');
+        const isOn1 = btnOn31.classList.contains('on');
+        socket.emit('light1', { status: isOn1 ? 'off' : 'on' });
+
+        localStorage.setItem("light2State", isOn1 ? "off" : "on");
+    }
+    function handleClick32() {
+        const btnOn32 = document.getElementById('btn-on32');
+        const isOn2 = btnOn32.classList.contains('on');
+        socket.emit('light2', { status: isOn2 ? 'off' : 'on' });
+
+        localStorage.setItem("light3State", isOn2 ? "off" : "on");
+    }function handleClick33() {
+        const btnOn33 = document.getElementById('btn-on33');
+        const isOn3 = btnOn33.classList.contains('on');
+        socket.emit('light3', { status: isOn3 ? 'off' : 'on' });
+
+        localStorage.setItem("light4State", isOn3 ? "off" : "on");
+    }
+
+    function setButtonStates() {
+        // Đặt trạng thái của nút Đèn sưởi
+        const light1State = localStorage.getItem("light1State");
+        const btnOn1 = document.getElementById("btn-on1");
+        if (light1State === "on") {
+            btnOn1.classList.add("on");
+        } else {
+            btnOn1.classList.remove("on");
+        }
+
+        // Đặt trạng thái của nút Quạt
+        const fanState = localStorage.getItem("fanState");
+        const btnOn2 = document.getElementById("btn-on2");
+        if (fanState === "on") {
+            btnOn2.classList.add("on");
+        } else {
+            btnOn2.classList.remove("on");
+        }
+
+        // Đặt trạng thái của nút Đèn 1
+        const light2State = localStorage.getItem("light2State");
+        const btnOn31 = document.getElementById("btn-on31");
+        if (light2State === "on") {
+            btnOn31.classList.add("on");
+        } else {
+            btnOn31.classList.remove("on");
+        }
+
+        // Đặt trạng thái của nút Đèn 2
+        const light3State = localStorage.getItem("light3State");
+        const btnOn32 = document.getElementById("btn-on32");
+        if (light3State === "on") {
+            btnOn32.classList.add("on");
+        } else {
+            btnOn32.classList.remove("on");
+        }
+
+        // Đặt trạng thái của nút Đèn 3
+        const light4State = localStorage.getItem("light4State");
+        const btnOn33 = document.getElementById("btn-on33");
+        if (light4State === "on") {
+            btnOn33.classList.add("on");
+        } else {
+            btnOn33.classList.remove("on");
+        }
+    }
+
+    document.getElementById("submitTime").addEventListener("click", function () {
+        const hour1 = document.getElementById("hour").value;
+        const minute1 = document.getElementById("minute").value;
+        const hour2 = document.querySelectorAll("#hour")[1].value;
+        const minute2 = document.querySelectorAll("#minute")[1].value;
+
+        const timeData = {
+            time1: { hour: hour1, minute: minute1 },
+            time2: { hour: hour2, minute: minute2 },
+        };
+
+        // Gửi dữ liệu đến máy chủ Node.js
+        fetch("/update-time", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(timeData),
+        });
+        localStorage.setItem("timeData", JSON.stringify(timeData));
+    });
+
+    function restoreTimeData() {
+        const savedTimeData = localStorage.getItem("timeData");
+        if (savedTimeData) {
+            const timeData = JSON.parse(savedTimeData);
+            document.getElementById("hour").value = timeData.time1.hour;
+            document.getElementById("minute").value = timeData.time1.minute;
+            document.querySelectorAll("#hour")[1].value = timeData.time2.hour;
+            document.querySelectorAll("#minute")[1].value = timeData.time2.minute;
+        }
+    }
+
     window.addEventListener('load', function() {
+        setAutoModeButtonState();
+        setButtonStates();
+        restoreTimeData();
+
         const lux = localStorage.getItem('lux');    
         const nh3 = localStorage.getItem('nh3');
         const food = localStorage.getItem('food');
