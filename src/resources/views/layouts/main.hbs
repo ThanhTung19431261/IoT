@@ -214,18 +214,18 @@
 
             humChart.update();
 
-            if(data.Temperature > 31) {
+            if(data.Temperature > 34) {
                 document.querySelector('#change-temp').style.color = 'red';
-            } else if(data.Temperature < 31){
+            } else if(data.Temperature < 33){
                 document.querySelector('#change-temp').style.color = 'cyan';
             } else {
                 document.querySelector('#change-temp').style.color = '';
             }
 
-            if(data.Lux > 1000) {
+            if(data.Lux > 600) {
                 document.querySelector('#lux').style.color = 'red';
                 document.querySelector('#title-light').style.color = 'red';
-            } else if(data.Lux < 100){
+            } else if(data.Lux < 200){
                 document.querySelector('#lux').style.color = 'black';
                 document.querySelector('#title-light').style.color = 'black';
             } else {
@@ -234,15 +234,15 @@
                 document.querySelector('#title-light').style.color = '';
             }
 
-            if(data.Humidity > 70) {
+            if(data.Humidity > 50) {
                 document.querySelector('#change-hum').style.color = 'red';
-            } else if(data.Humidity < 60){
+            } else if(data.Humidity < 20){
                 document.querySelector('#change-hum').style.color = 'cyan';
             } else {
                 document.querySelector('#change-hum').style.color = '';
             }
 
-            if(data.NH3 > 7) {
+            if(data.NH3 > 6) {
                 document.querySelector('#nh3').style.color = 'red';
                 document.querySelector('#title-nh3').style.color = 'red';
             } else {

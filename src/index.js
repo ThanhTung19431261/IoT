@@ -165,7 +165,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+let emailSent = false;
+
 function sendEmail(alertMessage) {
+    if (emailSent) {
+        return;
+    }
+
+    emailSent = true;
+
     const mailOptions = {
         from: 'overlast123569@gmail.com',
         to: 'DuyTung110101@gmail.com',
@@ -178,6 +186,9 @@ function sendEmail(alertMessage) {
             console.log('Error sending email:', error);
         } else {
             console.log('Email sent:', info.response);
+            setTimeout(() => {
+                emailSent = false;
+            }, 60000);
         }
     });
 }
