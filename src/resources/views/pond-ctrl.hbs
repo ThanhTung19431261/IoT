@@ -111,6 +111,7 @@
 <script>
     var foodAmount = 0;
     const socket = io();
+    const localStorageKey8 = 'dataArrpond';
 
     // Listen for data from Firebase Realtime Database
     socket.on('data5', function(data) {
@@ -196,10 +197,10 @@
         localStorage.setItem("timeData_pond", JSON.stringify(timeData_pond));
     });
 
-    function restoretimeData() {
-        const savedTimeData = localStorage.getItem("timeData_pond");
-        if (savedTimeData) {
-            const timeData_pond = JSON.parse(savedTimeData);
+    function restoretimeData_pond() {
+        const savedTimeData_pond = localStorage.getItem("timeData_pond");
+        if (savedTimeData_pond) {
+            const timeData_pond = JSON.parse(savedTimeData_pond);
             document.getElementById("hour").value = timeData_pond.time1.hour;
             document.getElementById("minute").value = timeData_pond.time1.minute;
             document.querySelectorAll("#hour")[1].value = timeData_pond.time2.hour;
@@ -211,7 +212,7 @@
 
     window.addEventListener('load', function() {
         setAutoModeButtonState();
-        restoreTimeData();
+        restoretimeData_pond();
 
         const thucan = localStorage.getItem('thucan');
 
