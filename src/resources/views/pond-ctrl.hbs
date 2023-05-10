@@ -38,63 +38,70 @@
                 </div>
         </div>
 
+        <section>
+            <a href="#" id="btn-toggle-auto-mode" class="auto-mode-button" onclick="handleToggleAutoMode()"><i id="toggle-icon" class="fas fa-toggle-off"></i></a>
+            <h3 class="h3auto">Chế độ tự động</h3>
+        </section>
         <div class="container-fluid">
             <div class="row contrl1">
                 <div class="col-lg-6 col-ctrl">
                     <div class="chart-info-box ctrl-box">
                         <section>
                             <div style="width:110px; display: inline-block; float: left; margin-left: 39px;">
-                                <a href="#" id="btn-on4" class="food-button" onclick="handleClick4()" style="margin: 0 !important;"><i class="fas fa-drumstick-bite"></i></a>
+                                <a href="#" id="btn-on4" class="food-button" onclick="submitFoodValue()" style="margin: 0 !important;"><i class="fas fa-drumstick-bite"></i></a>
                             </div>
                             <h3 class="h3ctrl">Thức ăn</h3>
                             <div style="width:300px; display: inline-block;">
                                 <input type="range" min="0" max="1000" value="0" class="slider" id="foodRange" onchange="updateFoodValue()">
                                 <div class="foodValuec"><span id="foodValue">0g</span></div>
                             </div>
-                            <section>
-                                <h3 class="h3ctrl">Chế độ tự động</h3>
-                                <a href="#" id="btn-toggle-auto-mode" class="auto-mode-button" onclick="handleToggleAutoMode()"><i id="toggle-icon" class="fas fa-toggle-off"></i></a>
-                                <span></span>
-                            </section>
                         </section>
                     </div>
                 </div>
-                
-            </div>
 
-            <div class="row report">
-                <div class="col-lg-12">
-                    <div class="card-report">
-                        <div class="chart-info-box">
-                            <div class="card-header">
-                                <h4>Bảng thống kê dữ liệu</h4>
-                                <p>Hiển thị 20 dữ liệu gần đây nhất</p>
+                <div class="col-lg-6 col-ctrl">
+                    <div class="chart-info-box ctrl-box" style="width: 300px; height: 300px;">
+                        <div style="width:300px; display: inline-block;">
+                            <div style="margin-top: 5px;">
+                                <p style="font-size: 20px; font-weight: bold;">Cho ăn lần 1</p>
+                                <div class="time-inputs">
+                                    <div class="time-input" style="margin-left: 40px;">
+                                        <label for="hour" style="margin-bottom: 0;">Giờ:</label>
+                                        <input type="number" id="hour" name="hour" min="0" max="23" value="0">
+                                    </div>
+                                    <div class="time-input" style="margin-right: 50px;">
+                                        <label for="minute" style="margin-bottom: 0;">Phút:</label>
+                                        <input type="number" id="minute" name="minute" min="0" max="59" value="0">
+                                    </div>
+                                </div>
+                                <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Cho ăn lần 2</p>
+                                <div class="time-inputs">
+                                    <div class="time-input" style="margin-left: 40px;">
+                                        <label for="hour" style="margin-bottom: 0;">Giờ:</label>
+                                        <input type="number" id="hour" name="hour" min="0" max="23" value="0">
+                                    </div>
+                                    <div class="time-input" style="margin-right: 50px;">
+                                        <label for="minute" style="margin-bottom: 0;">Phút:</label>
+                                        <input type="number" id="minute" name="minute" min="0" max="59" value="0">
+                                    </div>
+                                </div>
+                                <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Cho ăn lần 3</p>
+                                <div class="time-inputs">
+                                    <div class="time-input" style="margin-left: 40px;">
+                                        <label for="hour" style="margin-bottom: 0;">Giờ:</label>
+                                        <input type="number" id="hour" name="hour" min="0" max="23" value="0">
+                                    </div>
+                                    <div class="time-input" style="margin-right: 50px;">
+                                        <label for="minute" style="margin-bottom: 0;">Phút:</label>
+                                        <input type="number" id="minute" name="minute" min="0" max="59" value="0">
+                                    </div>
+                                </div>
+                                <button id="submitTime" type="button" style="margin-top: 10px; border-radius: 5px;">Thiết lập</button>
                             </div>
-                            <div class="card-body">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nhiệt độ</th>
-                                            <th>Độ ẩm</th>
-                                            <th>Ánh sáng</th>
-                                            <th>Khí NH3</th>
-                                            <th>Thời gian cập nhật</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td id="1"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -103,92 +110,6 @@
 
 <script>
     var foodAmount = 0;
-
-    function updateFoodValue() {
-        var slider = document.getElementById("foodRange");
-        var output = document.getElementById("foodValue");
-        foodAmount = slider.value;
-        output.innerHTML = foodAmount + 'g';
-    }
-
-    var ipAddress = "192.168.1.12";
-    var servoState = false;
-
-    function handleClick4() {
-        if (!servoState) {
-            $.ajax({
-            url: "http://" + ipAddress + "/servo?foodAmount=" + foodAmount,
-            success: function() {
-                console.log("Turned On FAN");
-                servoState = true;
-                document.getElementById("btn-on4").innerHTML = "Turn Off FAN";
-            },
-            error: function() {
-                console.log("Error turning on FAN");
-            }
-            });
-        } else {
-            $.ajax({
-            url: "http://" + ipAddress + "/servo?foodAmount=0",
-            success: function() {
-                console.log("Turned Off FAN");
-                servoState = false;
-                document.getElementById("btn-on4").innerHTML = "Turn On FAN";
-            },
-            error: function() {
-                console.log("Error turning off FAN");
-            }
-            });
-        }
-        if (checkFoodAmount()) {
-            $('#btn-on4').removeClass('on');
-        }
-    }
-
-    function checkFoodAmount() {
-        const dataFood = parseInt(localStorage.getItem("food"));
-        if (dataFood >= foodAmount) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function handleToggleAutoMode() {
-        $.ajax({
-        url: "http://" + ipAddress + "/toggleAutoMode",
-        success: function () {
-            console.log("Toggled Auto Mode");
-        },
-        error: function () {
-            console.log("Error toggling Auto");
-        },
-        });
-
-        var toggleIcon = document.getElementById("toggle-icon");
-        if (toggleIcon.classList.contains("fa-toggle-off")) {
-            toggleIcon.classList.remove("fa-toggle-off");
-            toggleIcon.classList.add("fa-toggle-on");
-        } else {
-            toggleIcon.classList.remove("fa-toggle-on");
-            toggleIcon.classList.add("fa-toggle-off");
-        }
-    }
-
-
-    $(document).ready(function(){
-        $('#btn-on4').click(function(){
-            if (checkFoodAmount()) {
-                $(this).toggleClass('on');
-            } else {     
-                $(this).removeClass('on');
-            }
-        });
-        $("#btn-toggle-auto-mode").click(function () {
-            $(this).toggleClass("on");
-        });
-    });
-
     const socket = io();
 
     // Listen for data from Firebase Realtime Database
@@ -198,7 +119,100 @@
         localStorage.setItem("food", data.foodAmount);
     });
 
+    $(document).ready(function(){
+        $("#btn-toggle-auto-mode").click(function () {
+            $(this).toggleClass("on");
+        });
+
+    });
+
+    function handleToggleAutoMode() {
+        var toggleIcon = document.getElementById("toggle-icon");
+        if (toggleIcon.classList.contains("fa-toggle-off")) {
+            toggleIcon.classList.remove("fa-toggle-off");
+            toggleIcon.classList.add("fa-toggle-on");
+        } else {
+            toggleIcon.classList.remove("fa-toggle-on");
+            toggleIcon.classList.add("fa-toggle-off");
+        }
+
+        const btnAutoOn = document.getElementById('btn-toggle-auto-mode');
+        const isOnAuto = btnAutoOn.classList.contains('on');
+        socket.emit('auto1', { status: isOnAuto ? 'off' : 'on' });
+
+        localStorage.setItem("autoModeState", isOnAuto ? "off" : "on");
+    }
+
+    function setAutoModeButtonState() {
+        const autoModeState = localStorage.getItem("autoModeState");
+        const toggleIcon = document.getElementById("toggle-icon");
+        const btnAutoOn = document.getElementById("btn-toggle-auto-mode");
+
+        if (autoModeState === "on") {
+            toggleIcon.classList.remove("fa-toggle-off");
+            toggleIcon.classList.add("fa-toggle-on");
+            btnAutoOn.classList.add("on");
+        } else {
+            toggleIcon.classList.remove("fa-toggle-on");
+            toggleIcon.classList.add("fa-toggle-off");
+            btnAutoOn.classList.remove("on");
+        }
+    }
+
+    function updateFoodValue() {
+        const foodRange = document.getElementById('foodRange');
+        const foodValue = document.getElementById('foodValue');
+        foodValue.textContent = foodRange.value + 'g';
+    }
+
+    function submitFoodValue() {
+        const foodRange = document.getElementById('foodRange');
+        const foodValue = foodRange.value;
+        socket.emit('food1', { value: foodValue });
+    }
+
+    document.getElementById("submitTime").addEventListener("click", function () {
+        const hour1 = document.getElementById("hour").value;
+        const minute1 = document.getElementById("minute").value;
+        const hour2 = document.querySelectorAll("#hour")[1].value;
+        const minute2 = document.querySelectorAll("#minute")[1].value;
+        const hour3 = document.querySelectorAll("#hour")[2].value;
+        const minute3 = document.querySelectorAll("#minute")[2].value;
+
+        const timeData_pond = {
+            time1: { hour: hour1, minute: minute1 },
+            time2: { hour: hour2, minute: minute2 },
+            time3: { hour: hour3, minute: minute3 },
+        };
+
+        // Gửi dữ liệu đến máy chủ Node.js
+        fetch("/update-time1", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(timeData_pond),
+        });
+        localStorage.setItem("timeData_pond", JSON.stringify(timeData_pond));
+    });
+
+    function restoretimeData() {
+        const savedTimeData = localStorage.getItem("timeData_pond");
+        if (savedTimeData) {
+            const timeData_pond = JSON.parse(savedTimeData);
+            document.getElementById("hour").value = timeData_pond.time1.hour;
+            document.getElementById("minute").value = timeData_pond.time1.minute;
+            document.querySelectorAll("#hour")[1].value = timeData_pond.time2.hour;
+            document.querySelectorAll("#minute")[1].value = timeData_pond.time2.minute;
+            document.querySelectorAll("#hour")[2].value = timeData_pond.time3.hour;
+            document.querySelectorAll("#minute")[2].value = timeData_pond.time3.minute;
+        }
+    }
+
     window.addEventListener('load', function() {
+        setAutoModeButtonState();
+        restoreTimeData();
+
         const thucan = localStorage.getItem('thucan');
 
         document.querySelector('#thucan').textContent = thucan + ' ' + 'g';

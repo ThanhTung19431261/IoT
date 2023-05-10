@@ -26,7 +26,7 @@ const port = process.env.PORT || 3000;
 
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccount),
-    databaseURL: "https://myproject-8ec64-default-rtdb.asia-southeast1.firebasedatabase.app"
+    databaseURL: "https://newproject-2026b-default-rtdb.asia-southeast1.firebasedatabase.app"
 });
 
 app.use(morgan('combined'))
@@ -163,7 +163,9 @@ const light2Ref = firebaseAdmin.database().ref('/Light2_Status');
 const light3Ref = firebaseAdmin.database().ref('/Light3_Status');
 const fanRef = firebaseAdmin.database().ref('/fan_Status');
 const foodRef = firebaseAdmin.database().ref('/food_Value');
+const foodRef1 = firebaseAdmin.database().ref('/food_Value_pond');
 const autoRef = firebaseAdmin.database().ref('/auto_Status');
+const autoRef1 = firebaseAdmin.database().ref('/auto_Status_pond');
 
 function updateLightStatus(status) {
     lightRef.set(status);
@@ -189,8 +191,16 @@ function updateFoodStatus(status) {
     foodRef.set(status);
 }
 
+function updateFoodStatus1(status) {
+    foodRef1.set(status);
+}
+
 function updateAutoStatus(status) {
     autoRef.set(status);
+}
+
+function updateAutoStatus1(status) {
+    autoRef1.set(status);
 }
 
 io.on('connection', (socket) => {
@@ -226,9 +236,19 @@ io.on('connection', (socket) => {
         updateFoodStatus(data.value);
     });
 
+    socket.on('food1', (data) => {
+        console.log('Food value:', data.value);
+        updateFoodStatus1(data.value);
+    });
+
     socket.on('auto', (data) => {
         console.log('Auto status:', data.status);
         updateAutoStatus(data.status);
+    });
+
+    socket.on('auto1', (data) => {
+        console.log('Auto status:', data.status);
+        updateAutoStatus1(data.status);
     });
 
     socket.on('disconnect', () => {
@@ -250,6 +270,22 @@ const timeRef2 = firebaseAdmin.database().ref("/Time2");
 function updateTimeData(timeData) {
     timeRef1.set(timeData.time1);
     timeRef2.set(timeData.time2);
+}
+
+app.post("/update-time1", (req, res) => {
+    const timeData_pond = req.body;
+    updateTimeData1(timeData_pond);
+    res.sendStatus(200);
+});
+
+const timeRef_pond1 = firebaseAdmin.database().ref("/Time1_pond");
+const timeRef_pond2 = firebaseAdmin.database().ref("/Time2_pond");
+const timeRef_pond3 = firebaseAdmin.database().ref("/Time3_pond");
+
+function updateTimeData1(timeData_pond) {
+    timeRef_pond1.set(timeData_pond.time1);
+    timeRef_pond2.set(timeData_pond.time2);
+    timeRef_pond3.set(timeData_pond.time3);
 }
 
 const transporter = nodemailer.createTransport({
