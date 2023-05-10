@@ -297,13 +297,9 @@ const transporter = nodemailer.createTransport({
 });
 
 let emailSent = false;
+let emailSent1 = false;
 
 function sendEmail(alertMessage) {
-    if (emailSent) {
-        return;
-    }
-
-    emailSent = true;
 
     const mailOptions = {
         from: 'overlast123569@gmail.com',
@@ -333,7 +329,6 @@ function handleAlert(snapshot, alertType) {
     } else {
         delete alerts[alertKey];
     }
-
     checkAlerts(alerts);
 }
 
@@ -351,18 +346,74 @@ function checkAlerts(alerts) {
     }
 }
 
+function sendEmail1(alertMessage1) {
+
+    const mailOptions1 = {
+        from: 'overlast123569@gmail.com',
+        to: 'dkaito1120@gmail.com',
+        subject: 'Cảnh Báo',
+        text: `Nội dung cảnh báo:\n${alertMessage1}`
+    };
+
+    transporter.sendMail(mailOptions1, (error1, info1) => {
+        if (error1) {
+            console.log('Error sending email:', error1);
+        } else {
+            console.log('Email sent:', info1.response);
+            setTimeout(() => {
+                emailSent1 = false;
+            }, 60000);
+        }
+    });
+}
+
+function handleAlert1(snapshot1, alertType1) {
+    const status1 = snapshot1.val();
+    const alertKey1 = `Alert_${alertType1}`;
+
+    if (status1) {
+        alerts1[alertKey1] = `${alertType1}: ${status1}`;
+    } else {
+        delete alerts1[alertKey1];
+    }
+
+    checkAlerts1(alerts1);
+}
+
+function checkAlerts1(alerts1) {
+    let alertMessage1 = '';
+
+    for (const key1 in alerts1) {
+        if (alerts1[key1]) {
+            alertMessage1 += `${alerts1[key1]}\n`;
+        }
+    }
+
+    if (alertMessage1) {
+        sendEmail1(alertMessage1);
+    }
+}
+
 const tempAlert = firebaseAdmin.database().ref('/Alert_temp');
 const luxAlert = firebaseAdmin.database().ref('/Alert_lux');
 const humAlert = firebaseAdmin.database().ref('/Alert_hum');
 const nh3Alert = firebaseAdmin.database().ref('/Alert_nh3');
 
+const tempAlertw = firebaseAdmin.database().ref('/Alert_tempw');
+const phAlert = firebaseAdmin.database().ref('/Alert_ph');
+const turAlert = firebaseAdmin.database().ref('/Alert_tur');
+
 const alerts = {};
+const alerts1 = {};
 
 tempAlert.on('value', (snapshot) => handleAlert(snapshot, 'Temperature'));
 luxAlert.on('value', (snapshot) => handleAlert(snapshot, 'Light level'));
 humAlert.on('value', (snapshot) => handleAlert(snapshot, 'Humidity'));
 nh3Alert.on('value', (snapshot) => handleAlert(snapshot, 'NH3 level'));
 
+tempAlertw.on('value', (snapshot1) => handleAlert1(snapshot1, 'Temperature_Water'));
+phAlert.on('value', (snapshot1) => handleAlert1(snapshot1, 'Ph'));
+turAlert.on('value', (snapshot1) => handleAlert1(snapshot1, 'Turbidity'));
 
 
 server.listen(port)
