@@ -1,25 +1,25 @@
 .header-home {
-  background: inherit;
+  background: #2C2B2A;
   font-size: 1.6rem;
   line-height: 1.3em;
   margin-bottom: var(--gap);
-  padding: 3vmin 4vmin;
-  margin-top: 25px; }
+  padding: 3vmin 4vmin; }
 
 .nav-home {
   margin: 0 auto;
   max-width: 1400px;
   width: 100%;
-  display: flex;
-  flex-direction: row; }
+  display: block;
+  flex-direction: row;
+  height: 100px; }
 
 .page-home {
-  background-color: #F8F8F8;
+  background-color: #2C2B2A;
   padding: 0 4vmin;
   height: 1000px; }
 
 .container-home {
-  background-color: #F8F8F8;
+  background-color: #2C2B2A;
   margin: 0 auto;
   max-width: 1400px;
   width: 100%; }
@@ -63,3 +63,35 @@
   color: inherit;
   text-decoration: none;
   transition: .4s ease; }
+
+.nav-home p {
+  display: block; }
+
+.h1-home {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  display: inline;
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px; }
+
+.h4-home {
+  font-size: 22px;
+  text-align: center;
+  width: 100%;
+  color: #FFFFFF;
+  margin: 0 auto 60px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+  display: block;
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px; }
