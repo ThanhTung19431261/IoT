@@ -195,7 +195,7 @@
             // Update the temperature chart with the new data
             var time = new Date().toLocaleTimeString();
 
-            if (tempCount >= 4) {
+            if (tempCount >= 0) {
                 tempChart.data.labels.shift();
                 tempChart.data.series[0].shift();
             } else {
@@ -206,7 +206,7 @@
 
             tempChart.update();
 
-            if (humCount >= 4) {
+            if (humCount >= 0) {
                 humChart.data.labels.shift();
                 humChart.data.series[0].shift();
             } else {
