@@ -187,7 +187,7 @@
             localStorage.setItem('temperature', data.Temperature);
 
             document.querySelector('#lux').textContent = data.Lux + ' ' + 'Lux';
-            document.querySelector('#nh3').textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
+            document.querySelector('#nh3').textContent = data.NH3.toFixed(4) + ' ' + '%';
             document.querySelector('#food').textContent = data.Food + ' ' + 'g';
             document.querySelector('#humidity').textContent = data.Humidity;
             document.querySelector('#temperature').textContent = data.Temperature;
@@ -306,7 +306,7 @@
                 td5.textContent = data.Food + ' ' + 'g';
                 tr.appendChild(td5);
                 const td6 = document.createElement('td');
-                td6.textContent = data.NH3.toFixed(2) + ' ' + 'ppm';
+                td6.textContent = data.NH3.toFixed(4) + ' ' + '%';
                 tr.appendChild(td6);
                 const td7 = document.createElement('td');
                 td7.textContent = data.time || updateTime();
@@ -345,7 +345,7 @@
             const temperature = localStorage.getItem('temperature');
 
             document.querySelector('#lux').textContent = lux + ' ' + 'Lux';
-            document.querySelector('#nh3').textContent = nh3 + ' ' + 'ppm';
+            document.querySelector('#nh3').textContent = nh3 + ' ' + '%';
             document.querySelector('#food').textContent = food + ' ' + 'g';
             document.querySelector('#humidity').textContent = humidity;
             document.querySelector('#temperature').textContent = temperature;
