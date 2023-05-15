@@ -266,10 +266,12 @@ app.post("/update-time", (req, res) => {
 
 const timeRef1 = firebaseAdmin.database().ref("/Time1");
 const timeRef2 = firebaseAdmin.database().ref("/Time2");
+const foodRef3 = firebaseAdmin.database().ref('/food_Auto');
 
 function updateTimeData(timeData) {
     timeRef1.set(timeData.time1);
     timeRef2.set(timeData.time2);
+    foodRef3.set(timeData.foodValue);
 }
 
 app.post("/update-time1", (req, res) => {

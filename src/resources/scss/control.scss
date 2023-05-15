@@ -497,3 +497,21 @@ input[type="number"] {
     height: 30px;
     margin-left: 5px;
 }
+
+.condition {
+    border: 4px solid #a9afbbd1;
+}
+
+.condition>thead>tr>th {
+    border: 4px solid #a9afbbd1;
+    background: linear-gradient(60deg, #029eb1, #25b1c3);
+    color: white;
+}
+
+.condition>tbody>tr>td {
+    border: 4px solid #a9afbbd1;
+}
+
+.ctrl_th>th {
+    background: linear-gradient(60deg, #43d765, #006517) !important;
+}

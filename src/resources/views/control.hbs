@@ -132,6 +132,52 @@
                 </div>
             </div>
 
+            <div class="row report" style="margin-top: 70px;">
+                <div class="col-lg-12">
+                    <div class="card-report">
+                        <div class="card-header farm" style="margin-left: 20px; width: 1340px;">
+                            <h4>Sau khi bật chế độ tự động</h4>
+                            <p>Điều kiện các thiết bị hoạt động</p>
+                        </div>
+                        <div class="card-body">
+                            <table class="condition">
+                                <thead>
+                                    <tr>
+                                        <th>Thiết bị</th>
+                                        <th>Điều kiện</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Một đèn</td>
+                                        <td>Cường độ ánh sáng (lux) trong khoảng 30-50 lux</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hai đèn</td>
+                                        <td>Cường độ ánh sáng (lux) trong khoảng 20-30 lux</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ba đèn</td>
+                                        <td>Cường độ ánh sáng (lux) trong khoảng 10-15 lux</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Đèn sưởi</td>
+                                        <td>Nhiệt độ chuồng dưới 26 độ C</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quạt</td>
+                                        <td>Nhiệt độ chuồng vượt quá 35 độ C</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cho ăn</td>
+                                        <td>Thiết lập lượng thức ăn và thời gian cho ăn lần 1, lần 2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -316,10 +362,12 @@
         const minute1 = document.getElementById("minute").value;
         const hour2 = document.querySelectorAll("#hour")[1].value;
         const minute2 = document.querySelectorAll("#minute")[1].value;
+        const foodValue = document.getElementById("foodRange").value;
 
         const timeData = {
             time1: { hour: hour1, minute: minute1 },
             time2: { hour: hour2, minute: minute2 },
+            foodValue: foodValue,
         };
 
         // Gửi dữ liệu đến máy chủ Node.js
